@@ -1,0 +1,43 @@
+{
+  "name": "fuge-runner",
+  "description": "",
+  "keywords": [
+    "canonical",
+    "node",
+    "module"
+  ],
+  "version": "0.1.0",
+  "license": "MITL",
+  "author": "Peter Elger (http://nearform.com/)",
+  "contributors": [
+    "Peter Elger <elger.peter@gmail.com> (http://peterelger.com/)"
+  ],
+  "main": "./runner.js",
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {
+    "async": "^0.9.0",
+    "chalk": "^1.1.1",
+    "chokidar": "^1.2.0",
+    "chokidar-child": "^0.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pelger/canonical-node.git"
+  },
+  "scripts": {
+    "lint": "jshint **/*.js",
+    "test": "jshint **/*.js && tape test/*Test.js",
+    "coverage": "istanbul cover tape **/*Test.js && open ./coverage/lcov-report/index.html",
+    "coverage-check": "istanbul cover tape test/*Test.js && istanbul check-coverage",
+    "commit-check": "jshint **/*.js && istanbul cover tape test/*Test.js && istanbul check-coverage"
+  },
+  "pre-commit": [
+    "commit-check"
+  ],
+  "devDependencies": {
+    "pre-commit": "^1.1.1",
+    "tape": "^4.2.0"
+  }
+}
