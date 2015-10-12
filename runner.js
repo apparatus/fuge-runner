@@ -19,16 +19,12 @@ var system = require('./lib/system')();
 
 module.exports = function() {
 
-  var run = function(sysDef, cb) {
-    system.start(sysDef, function(err) {
-      cb(err);
-    });
-  };
-
-
+  var start = function(sysDef, cb) { system.start(sysDef, cb); };
+  var stop = function(sysDef, cb) { system.stop(sysDef, cb); };
 
   return {
-    run: run,
+    start: start,
+    stop: stop,
   };
 };
  
