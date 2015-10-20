@@ -6,8 +6,8 @@
     "node",
     "module"
   ],
-  "version": "0.1.1",
-  "license": "MITL",
+  "version": "0.1.2",
+  "license": "MIT",
   "author": "Peter Elger (http://nearform.com/)",
   "contributors": [
     "Peter Elger <elger.peter@gmail.com> (http://peterelger.com/)"
