@@ -63,6 +63,7 @@ module.exports = {
       },
       'docsrv-4a8ac373': {
         id: 'docsrv-4a8ac373',
+        monitor: true,
         name: 'docsrv',
         containedBy: 'root-6f718f4',
         containerDefinitionId: 'docsrv',
@@ -90,6 +91,7 @@ module.exports = {
       'srv2-4a8ac373': {
         id: 'srv2-4a8ac373',
         name: 'srv2',
+        monitor: true,
         containedBy: 'root-6f718f4',
         containerDefinitionId: 'srv2',
         type: 'process',

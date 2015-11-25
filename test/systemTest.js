@@ -18,7 +18,8 @@ var fs = require('fs');
 var request = require('request');
 var _ = require('lodash');
 var test = require('tape');
-var system = require('../lib/system.js')();
+var system = require('../lib/system.js')({runDocker: false,
+                                          logPath: __dirname + '/log'});
 var sys = require('./fixture/system/systemDefinition.js');
 var sys2 = require('./fixture/system2/systemDefinition.js');
 var async = require('async');
@@ -28,7 +29,7 @@ test('system test', function(t) {
   t.plan(4);
 
   fs.writeFileSync(__dirname + '/fixture/system/response.json', '{ "resp": "Hello World!\\n" }', 'utf8');
-  system.start(sys, function(err) {
+  system.startAll(sys, function(err) {
     t.equal(err, undefined);
 
     setTimeout(function() {
@@ -39,7 +40,7 @@ test('system test', function(t) {
         setTimeout(function() {
           request('http://localhost:8000', function (error, response, body) {
             t.equal(body, 'Hello Fish!\n');
-            system.stop(function(err) {
+            system.stopAll(sys, function(err) {
               t.equal(err, undefined);
             });
           });
@@ -55,13 +56,14 @@ test('system fail test', function(t) {
 
   system.reset();
   fs.writeFileSync(__dirname + '/fixture/system2/response.json', '{ "resp": "Hello World!\\n" }', 'utf8');
-  system.start(sys2, function() {
+  system.startAll(sys, function() {
     setTimeout(function() {
       var p = system.processes();
+      //console.log(JSON.stringify(p, null, 2));
       delete p[_.keys(p)[0]].container.specific.execute.exec;
       fs.writeFileSync(__dirname + '/fixture/system2/response.json', '{ "resp": "Hello Fish!\\n" }', 'utf8');
       setTimeout(function() {
-        system.stop(function(err) {
+        system.stopAll(sys2, function(err) {
           t.equal(err, undefined);
         });
       }, 200);
@@ -77,9 +79,9 @@ test('system colour test', function(t) {
   system.reset();
   async.eachSeries(restart, function(idx, next) {
     system.reset();
-    system.start(sys, function() {
+    system.startAll(sys, function() {
       setTimeout(function() {
-        system.stop(function() {
+        system.stopAll(sys, function() {
           next();
         });
       }, 500);

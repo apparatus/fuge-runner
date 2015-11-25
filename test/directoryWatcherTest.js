@@ -55,8 +55,7 @@ test('directory watcher test', function(t) {
   t.plan(1);
   var w;
 
-
-  watcher.start(container, function() {
+  watcher.start(container, {}, function() {
     t.pass();
     watcher.stop(w);
   },

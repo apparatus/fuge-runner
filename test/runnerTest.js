@@ -17,7 +17,8 @@
 var fs = require('fs');
 var request = require('request');
 var test = require('tape');
-var main = require('../runner.js')();
+var main = require('../runner.js')({runDocker: false,
+                                    logPath: __dirname + '/log'});
 var sys = require('./fixture/system/systemDefinition.js');
 
 
@@ -25,7 +26,7 @@ test('runner test', function(t) {
   t.plan(4);
 
   fs.writeFileSync(__dirname + '/fixture/system/response.json', '{ "resp": "Hello World!\\n" }', 'utf8');
-  main.start(sys, function(err) {
+  main.startAll(sys, function(err) {
     t.equal(err, undefined);
 
     setTimeout(function() {
@@ -36,7 +37,7 @@ test('runner test', function(t) {
         setTimeout(function() {
           request('http://localhost:8000', function (error, response, body) {
             t.equal(body, 'Hello Fish!\n');
-            main.stop(function(err) {
+            main.stopAll(sys, function(err) {
               t.equal(err, undefined);
             });
           });

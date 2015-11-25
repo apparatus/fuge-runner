@@ -22,10 +22,10 @@ var container = {
   name: 'frontend',
   containedBy: 'machine$fe2-2a4e28e5',
   containerDefinitionId: 'frontend',
-  type: 'docker',
+  type: 'process',
   contains: [],
   specific: {
-    type: 'docker',
+    type: 'process',
     path: __dirname + '/fixture/processRunner',
     proxyPort: 10000,
     servicePort: 20008,
@@ -53,14 +53,15 @@ var container = {
 var exitCb = function() {
 };
 
+
 test('process runner test', function(t) {
   t.plan(3);
 
-  runner.start(container, exitCb, function(err, child) {
+  runner.start('live', container, {}, exitCb, function(err, child) {
     t.equal(null, err);
     t.notEqual(undefined, child.pid);
     setTimeout(function() {
-      runner.stop(child.pid, function(err) {
+      runner.stop(container, child.pid, function(err) {
         t.equal(null, err);
       });
     }, 1000);
@@ -68,15 +69,14 @@ test('process runner test', function(t) {
 });
 
 test('process exit test', function(t) {
-  t.plan(3);
+  t.plan(2);
 
   container.specific.execute.exec = 'node willfail.js';
-  runner.start(container, exitCb, function(err, child) {
+  runner.start('live', container, {}, exitCb, function(err, child) {
     t.equal(null, err);
-    t.notEqual(undefined, child.pid);
     setTimeout(function() {
-      runner.stop(child.pid, function(err) {
-        t.notEqual(null, err);
+      runner.stop(container, child.pid, function(err) {
+        t.equal(null, err);
       });
     }, 1000);
   });
@@ -87,7 +87,7 @@ test('missing exec', function(t) {
   t.plan(1);
 
   container.specific.execute.exec = undefined;
-  runner.start(container, exitCb, function(err) {
+  runner.start('live', container, {}, exitCb, function(err) {
     t.notEqual(null, err);
   });
 });
@@ -97,12 +97,12 @@ test('process fail test', function(t) {
   t.plan(3);
 
   container.specific.execute.exec = 'node wibble.js';
-  runner.start(container, exitCb, function(err, child) {
+  runner.start('live', container, {}, exitCb, function(err, child) {
     t.equal(null, err);
     t.notEqual(undefined, child.pid);
     setTimeout(function() {
-      runner.stop(child.pid, function(err) {
-        t.notEqual(null, err);
+      runner.stop(container, child.pid, function(err) {
+        t.equal(null, err);
       });
     }, 1000);
   });
