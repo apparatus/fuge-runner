@@ -2,11 +2,11 @@
   "name": "fuge-runner",
   "description": "",
   "keywords": [
-    "canonical",
-    "node",
-    "module"
+    "fuge",
+    "microservices",
+    "runner"
   ],
-  "version": "0.2.1",
+  "version": "0.4.0",
   "license": "MIT",
   "author": "Peter Elger (http://nearform.com/)",
   "contributors": [
@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pelger/canonical-node.git"
+    "url": "https://github.com/apparatus/fuge-runner"
   },
   "scripts": {
     "lint": "jshint **/*.js",
