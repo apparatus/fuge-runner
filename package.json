@@ -6,7 +6,7 @@
     "microservices",
     "runner"
   ],
-  "version": "0.4.0",
+  "version": "0.4.1",
   "license": "MIT",
   "author": "Peter Elger (http://nearform.com/)",
   "contributors": [
@@ -22,6 +22,7 @@
     "chokidar": "^1.2.0",
     "chokidar-child": "^0.1.1",
     "lodash": "^3.10.1",
+    "ps-tree": "^1.0.1",
     "simple-grep": "0.0.2"
   },
   "repository": {
