@@ -23,10 +23,10 @@ module.exports = function(config) {
   var system = require('./lib/system')(config);
   var util = require('./lib/util')();
 
-  var start = function(sysDef, name, cb) { system.start(sysDef, name, cb); };
-  var startAll = function(sysDef, cb) { system.startAll(sysDef, cb); };
+  var start = function(sysDef, name, count, cb) { system.start(sysDef, name, count, cb); };
+  var startAll = function(sysDef, count,  cb) { system.startAll(sysDef, count, cb); };
   var debug = function(sysDef, name, cb) { system.debug(sysDef, name, cb); };
-  var stop = function(sysDef, name, cb) { system.stop(sysDef, name, cb); };
+  var stop = function(sysDef, name, count, cb) { system.stop(sysDef, name, count, cb); };
   var stopAll = function(sysDef, cb) { system.stopAll(sysDef, cb); };
 
   var pullAll = function(sysDef, cb) { puller.pullAll(sysDef, cb); };
