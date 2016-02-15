@@ -51,6 +51,8 @@ module.exports = function(config) {
 
   var heap = function(sysDef, name) { system.heap(sysDef, name); };
   var sendMessage = function(sysDef, name, message) { system.sendMessage(sysDef, name, message); };
+  var startReport = function(sysDef, name) { system.startReport(sysDef, name); };
+  var stopReport = function(sysDef, name) { system.stopReport(sysDef, name); };
 
   return {
     start: start,
@@ -81,6 +83,8 @@ module.exports = function(config) {
     grepAll: grepAll,
 
     heap: heap,
-    sendMessage: sendMessage
+    sendMessage: sendMessage,
+    startReport: startReport,
+    stopReport: stopReport
   };
 };
