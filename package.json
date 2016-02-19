@@ -10,7 +10,8 @@
   "license": "MIT",
   "author": "Peter Elger (http://nearform.com/)",
   "contributors": [
-    "Peter Elger <elger.peter@gmail.com> (http://peterelger.com/)"
+    "Peter Elger <elger.peter@gmail.com> (http://peterelger.com/)",
+    "Matthew O'Connor (https://github.com/matthewoconnor-development)"
   ],
   "main": "./runner.js",
   "engines": {
