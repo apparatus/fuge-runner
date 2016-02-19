@@ -23,7 +23,8 @@
     "chokidar-child": "^0.1.1",
     "lodash": "^3.10.1",
     "ps-tree": "^1.0.1",
-    "simple-grep": "0.0.2"
+    "simple-grep": "0.0.2",
+    "winpstree": "^0.1.0"
   },
   "repository": {
     "type": "git",
