@@ -33,16 +33,19 @@
   },
   "scripts": {
     "lint": "jshint **/*.js",
-    "test": "jshint **/*.js && tape test/*Test.js",
+    "test": "jshint **/*.js && tape test/*Test.js | tap-spec",
     "coverage": "istanbul cover tape **/*Test.js && open ./coverage/lcov-report/index.html",
     "coverage-check": "istanbul cover tape test/*Test.js && istanbul check-coverage",
-    "commit-check": "jshint **/*.js && tape test/*Test.js"
+    "commit-check": "jshint **/*.js && tape test/*Test.js | tap-spec"
   },
   "pre-commit": [
     "commit-check"
   ],
   "devDependencies": {
+    "istanbul": "^0.4.2",
+    "jshint": "^2.9.1",
     "pre-commit": "^1.1.1",
+    "tap-spec": "^4.1.1",
     "tape": "^4.2.0"
   }
 }
