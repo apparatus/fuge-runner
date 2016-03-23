@@ -26,6 +26,7 @@ module.exports = function(config) {
   var start = function(sysDef, name, count, cb) { system.start(sysDef, name, count, cb); };
   var startAll = function(sysDef, count,  cb) { system.startAll(sysDef, count, cb); };
   var debug = function(sysDef, name, cb) { system.debug(sysDef, name, cb); };
+  var profile = function(sysDef, name, cb) { system.profile(sysDef, name, cb); };
   var stop = function(sysDef, name, count, cb) { system.stop(sysDef, name, count, cb); };
   var stopAll = function(sysDef, cb) { system.stopAll(sysDef, cb); };
 
@@ -54,6 +55,7 @@ module.exports = function(config) {
     start: start,
     startAll: startAll,
     debug: debug,
+    profile: profile,
     stop: stop,
     stopAll: stopAll,
 
