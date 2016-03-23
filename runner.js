@@ -49,6 +49,10 @@ module.exports = function(config) {
   var grep = function(name, config, search, cb) { util.grep(name, config, search, cb); };
   var grepAll = function(system, config, search, cb) { util.grepAll(system, config, search, cb); };
 
+  var heap = function(sysDef, name) { system.heap(sysDef, name); };
+  var sendMessage = function(sysDef, name, message) { system.sendMessage(sysDef, name, message); };
+  var startReport = function(sysDef, name) { system.startReport(sysDef, name); };
+  var stopReport = function(sysDef, name) { system.stopReport(sysDef, name); };
 
   return {
     start: start,
@@ -76,7 +80,11 @@ module.exports = function(config) {
     preview: preview,
 
     grep: grep,
-    grepAll: grepAll
+    grepAll: grepAll,
+
+    heap: heap,
+    sendMessage: sendMessage,
+    startReport: startReport,
+    stopReport: stopReport
   };
 };
- 
