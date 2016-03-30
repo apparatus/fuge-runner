@@ -34,6 +34,9 @@ var container = {
     execute: {
       exec: 'node runme.js'
     },
+    yamlPath: __dirname + '/system.yml',
+    source: {
+    },
     environment: {
       PROXY_HOST: '__TARGETIP__',
       'frontend_PORT': 10000,

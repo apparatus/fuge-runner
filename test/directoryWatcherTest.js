@@ -23,10 +23,10 @@ var container = {
   name: 'frontend',
   containedBy: 'machine$fe2-2a4e28e5',
   containerDefinitionId: 'frontend',
-  type: 'docker',
+  type: 'node',
   contains: [],
   specific: {
-    type: 'docker',
+    type: 'node',
     path: __dirname + '/fixture/directoryWatcher',
     proxyPort: 10000,
     servicePort: 20008,
@@ -50,13 +50,12 @@ var container = {
 };
 
 
-
 test('directory watcher test', function(t) {
   t.plan(1);
   var w;
 
   watcher.start(container, {}, function() {
-    t.pass();
+    t.pass('watcher called');
     watcher.stop(w);
   },
   function(watcher) {
@@ -69,3 +68,20 @@ test('directory watcher test', function(t) {
 });
 
 
+test('directory watcher disabled test', function(t) {
+  t.plan(1);
+  var w;
+
+  var opts = { overrides: { frontend: { monitor: false } } };
+  watcher.start(container, opts, function() {
+    watcher.stop(w);
+  },
+  function(watcher) {
+    t.equal(watcher, null, 'watcher is null');
+    w = watcher;
+  });
+
+  setTimeout(function() {
+    fs.writeFileSync(__dirname + '/fixture/directoryWatcher/asdf.txt', 'asdf', 'utf8');
+  }, 1000);
+});
