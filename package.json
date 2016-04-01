@@ -34,11 +34,11 @@
     "url": "https://github.com/apparatus/fuge-runner"
   },
   "scripts": {
-    "lint": "jshint **/*.js",
-    "test": "jshint **/*.js && tape test/*Test.js | tap-spec",
+    "lint": "jshint --exclude ./node_modules **/*.js",
+    "test": "jshint --exclude ./node_modules **/*.js && tape test/*Test.js | tap-spec",
     "coverage": "istanbul cover tape **/*Test.js && open ./coverage/lcov-report/index.html",
     "coverage-check": "istanbul cover tape test/*Test.js && istanbul check-coverage",
-    "commit-check": "jshint **/*.js && tape test/*Test.js | tap-spec"
+    "commit-check": "jshint --exclude ./node_modules **/*.js && tape test/*Test.js | tap-spec"
   },
   "pre-commit": [
     "commit-check"
