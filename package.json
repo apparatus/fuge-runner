@@ -40,8 +40,8 @@
     "url": "https://github.com/apparatus/fuge-runner"
   },
   "scripts": {
-    "lint": "jshint --exclude ./node_modules **/*.js",
-    "test": "jshint --exclude ./node_modules **/*.js && tape test/*Test.js | tap-spec",
+    "lint": "spacey-standard",
+    "test": "npm run lint && tape test/*Test.js | tap-spec",
     "coverage": "istanbul cover tape **/*Test.js && open ./coverage/lcov-report/index.html",
     "coverage-check": "istanbul cover tape test/*Test.js && istanbul check-coverage",
     "commit-check": "jshint --exclude ./node_modules **/*.js && tape test/*Test.js | tap-spec"
@@ -51,7 +51,7 @@
   ],
   "devDependencies": {
     "istanbul": "^0.4.2",
-    "jshint": "^2.9.1",
+    "spacey-standard": "^3.0.0",
     "pre-commit": "^1.1.1",
     "request": "^2.69.0",
     "tap-spec": "^4.1.1",

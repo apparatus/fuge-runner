@@ -12,11 +12,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+'use strict'
 
-var fs = require('fs');
-var test = require('tape');
-var watcher = require('../lib/directoryWatcher.js')();
+var fs = require('fs')
+var path = require('path')
+var test = require('tape')
+var watcher = require('../lib/directoryWatcher.js')()
 
 var container = {
   id: 'frontend-456805ef',
@@ -27,7 +28,7 @@ var container = {
   contains: [],
   specific: {
     type: 'node',
-    path: __dirname + '/fixture/directoryWatcher',
+    path: path.join(__dirname, '/fixture/directoryWatcher'),
     proxyPort: 10000,
     servicePort: 20008,
     buildScript: 'buildsrv.sh',
@@ -47,41 +48,41 @@ var container = {
       SERVICE_PORT: 20008
     }
   }
-};
+}
 
 
-test('directory watcher test', function(t) {
-  t.plan(1);
-  var w;
+test('directory watcher test', function (t) {
+  t.plan(1)
+  var w
 
-  watcher.start(container, {}, function() {
-    t.pass('watcher called');
-    watcher.stop(w);
+  watcher.start(container, {}, function () {
+    t.pass('watcher called')
+    watcher.stop(w)
   },
-  function(watcher) {
-    w = watcher;
-  });
+  function (watcher) {
+    w = watcher
+  })
 
-  setTimeout(function() {
-    fs.writeFileSync(__dirname + '/fixture/directoryWatcher/asdf.txt', 'asdf', 'utf8');
-  }, 1000);
-});
+  setTimeout(function () {
+    fs.writeFileSync(path.join(__dirname, '/fixture/directoryWatcher/asdf.txt'), 'asdf', 'utf8')
+  }, 1000)
+})
 
 
-test('directory watcher disabled test', function(t) {
-  t.plan(1);
-  var w;
+test('directory watcher disabled test', function (t) {
+  t.plan(1)
+  var w
 
-  var opts = { overrides: { frontend: { monitor: false } } };
-  watcher.start(container, opts, function() {
-    watcher.stop(w);
+  var opts = { overrides: { frontend: { monitor: false } } }
+  watcher.start(container, opts, function () {
+    watcher.stop(w)
   },
-  function(watcher) {
-    t.equal(watcher, null, 'watcher is null');
-    w = watcher;
-  });
+  function (watcher) {
+    t.equal(watcher, null, 'watcher is null')
+    w = watcher
+  })
 
-  setTimeout(function() {
-    fs.writeFileSync(__dirname + '/fixture/directoryWatcher/asdf.txt', 'asdf', 'utf8');
-  }, 1000);
-});
+  setTimeout(function () {
+    fs.writeFileSync(path.joinn(__dirname, '/fixture/directoryWatcher/asdf.txt'), 'asdf', 'utf8')
+  }, 1000)
+})

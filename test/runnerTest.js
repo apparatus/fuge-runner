@@ -12,38 +12,42 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+'use strict'
 
-var fs = require('fs');
-var request = require('request');
-var test = require('tape');
+var fs = require('fs')
+var path = require('path')
+var request = require('request')
+var test = require('tape')
 var main = require('../runner.js')({runDocker: false,
-                                    logPath: __dirname + '/log'});
-var sys = require('./fixture/system/systemDefinition.js');
+                                    logPath: path.join(__dirname, '/log')})
+var sys = require('./fixture/system/systemDefinition.js')
 
 
-test.skip('runner test', function(t) {
-  t.plan(4);
+test.skip('runner test', function (t) {
+  t.plan(4)
 
-  fs.writeFileSync(__dirname + '/fixture/system/response.json', '{ "resp": "Hello World!\\n" }', 'utf8');
-  main.startAll(sys, 1, function(err) {
-    t.equal(err, undefined);
+  var fixPath = path.join(__dirname, '/fixture/system/response.json')
+  fs.writeFileSync(fixPath, '{ "resp": "Hello World!\\n" }', 'utf8')
+  main.startAll(sys, 1, function (err) {
+    t.equal(err, undefined)
 
-    setTimeout(function() {
+    setTimeout(function () {
       request('http://localhost:8000', function (error, response, body) {
-        t.equal(body, 'Hello World!\n');
+        t.equal(error, undefined)
+        t.equal(body, 'Hello World!\n')
 
-        fs.writeFileSync(__dirname + '/fixture/system/response.json', '{ "resp": "Hello Fish!\\n" }', 'utf8');
-        setTimeout(function() {
+        fs.writeFileSync(fixPath, '{ "resp": "Hello Fish!\\n" }', 'utf8')
+        setTimeout(function () {
           request('http://localhost:8000', function (error, response, body) {
-            t.equal(body, 'Hello Fish!\n');
-            main.stopAll(sys, function(err) {
-              t.equal(err, undefined);
-            });
-          });
-        }, 1000);
-      });
-    }, 1000);
-  });
-});
+            t.equal(error, undefined)
+            t.equal(body, 'Hello Fish!\n')
+            main.stopAll(sys, function (err) {
+              t.equal(err, undefined)
+            })
+          })
+        }, 1000)
+      })
+    }, 1000)
+  })
+})
 
