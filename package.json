@@ -44,7 +44,7 @@
     "test": "npm run lint && tape test/*Test.js | tap-spec",
     "coverage": "istanbul cover tape **/*Test.js && open ./coverage/lcov-report/index.html",
     "coverage-check": "istanbul cover tape test/*Test.js && istanbul check-coverage",
-    "commit-check": "jshint --exclude ./node_modules **/*.js && tape test/*Test.js | tap-spec"
+    "commit-check": "npm run test"
   },
   "pre-commit": [
     "commit-check"

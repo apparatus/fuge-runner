@@ -24,7 +24,7 @@ var sys = require('./fixture/system/systemDefinition.js')
 
 
 test.skip('runner test', function (t) {
-  t.plan(4)
+  t.plan(6)
 
   var fixPath = path.join(__dirname, '/fixture/system/response.json')
   fs.writeFileSync(fixPath, '{ "resp": "Hello World!\\n" }', 'utf8')
@@ -50,4 +50,3 @@ test.skip('runner test', function (t) {
     }, 1000)
   })
 })
-

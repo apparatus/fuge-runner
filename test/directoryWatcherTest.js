@@ -83,6 +83,6 @@ test('directory watcher disabled test', function (t) {
   })
 
   setTimeout(function () {
-    fs.writeFileSync(path.joinn(__dirname, '/fixture/directoryWatcher/asdf.txt'), 'asdf', 'utf8')
+    fs.writeFileSync(path.join(__dirname, '/fixture/directoryWatcher/asdf.txt'), 'asdf', 'utf8')
   }, 1000)
 })

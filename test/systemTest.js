@@ -27,7 +27,7 @@ var async = require('async')
 
 
 test.skip('system test', function (t) {
-  t.plan(4)
+  t.plan(6)
 
   var fixPath = path.join(__dirname, '/fixture/system/response.json')
   fs.writeFileSync(fixPath, '{ "resp": "Hello World!\\n" }', 'utf8')
@@ -96,4 +96,3 @@ test.skip('system colour test', function (t) {
     t.equal(1, 1)
   })
 })
-
