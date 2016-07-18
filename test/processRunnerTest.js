@@ -12,10 +12,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+'use strict'
 
-var test = require('tape');
-var runner = require('../lib/processRunner.js')();
+var test = require('tape')
+var path = require('path')
+var runner = require('../lib/processRunner.js')()
 
 var container = {
   id: 'frontend-456805ef',
@@ -26,7 +27,7 @@ var container = {
   contains: [],
   specific: {
     type: 'process',
-    path: __dirname + '/fixture/processRunner',
+    path: path.join(__dirname, '/fixture/processRunner'),
     proxyPort: 10000,
     servicePort: 20008,
     buildScript: 'buildsrv.sh',
@@ -34,7 +35,7 @@ var container = {
     execute: {
       exec: 'node runme.js'
     },
-    yamlPath: __dirname + '/system.yml',
+    yamlPath: path.join(__dirname, '/system.yml'),
     source: {
     },
     environment: {
@@ -49,65 +50,65 @@ var container = {
       SERVICE_PORT: 20008
     }
   }
-};
+}
 
 
 
-var exitCb = function() {
-};
+var exitCb = function () {
+}
 
 
-test('process runner test', function(t) {
-  t.plan(3);
+test('process runner test', function (t) {
+  t.plan(3)
 
-  runner.start('live', container, {}, exitCb, function(err, child) {
-    t.equal(null, err);
-    t.notEqual(undefined, child.pid);
-    setTimeout(function() {
-      runner.stop(container, child.pid, function(err) {
-        t.equal(null, err);
-      });
-    }, 1000);
-  });
-});
+  runner.start('live', container, {}, exitCb, function (err, child) {
+    t.equal(null, err)
+    t.notEqual(undefined, child.pid)
+    setTimeout(function () {
+      runner.stop(container, child.pid, function (err) {
+        t.equal(null, err)
+      })
+    }, 1000)
+  })
+})
 
-test('process exit test', function(t) {
-  t.plan(2);
+test('process exit test', function (t) {
+  t.plan(2)
 
-  container.specific.execute.exec = 'node willfail.js';
-  runner.start('live', container, {}, exitCb, function(err, child) {
-    t.equal(null, err);
-    setTimeout(function() {
-      runner.stop(container, child.pid, function(err) {
-        t.equal(null, err);
-      });
-    }, 1000);
-  });
-});
-
-
-test('missing exec', function(t) {
-  t.plan(1);
-
-  container.specific.execute.exec = undefined;
-  runner.start('live', container, {}, exitCb, function(err) {
-    t.notEqual(null, err);
-  });
-});
+  container.specific.execute.exec = 'node willfail.js'
+  runner.start('live', container, {}, exitCb, function (err, child) {
+    t.equal(null, err)
+    setTimeout(function () {
+      runner.stop(container, child.pid, function (err) {
+        t.equal(null, err)
+      })
+    }, 1000)
+  })
+})
 
 
-test('process fail test', function(t) {
-  t.plan(3);
+test('missing exec', function (t) {
+  t.plan(1)
 
-  container.specific.execute.exec = 'node wibble.js';
-  runner.start('live', container, {}, exitCb, function(err, child) {
-    t.equal(null, err);
-    t.notEqual(undefined, child.pid);
-    setTimeout(function() {
-      runner.stop(container, child.pid, function(err) {
-        t.equal(null, err);
-      });
-    }, 1000);
-  });
-});
+  container.specific.execute.exec = undefined
+  runner.start('live', container, {}, exitCb, function (err) {
+    t.notEqual(null, err)
+  })
+})
+
+
+test('process fail test', function (t) {
+  t.plan(3)
+
+  container.specific.execute.exec = 'node wibble.js'
+  runner.start('live', container, {}, exitCb, function (err, child) {
+    t.equal(null, err)
+    t.notEqual(undefined, child.pid)
+    setTimeout(function () {
+      runner.stop(container, child.pid, function (err) {
+        t.equal(null, err)
+      })
+    }, 1000)
+  })
+})
 
