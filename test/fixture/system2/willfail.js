@@ -1,5 +1,6 @@
-'use strict';
+/*global asdf:true*/
+'use strict'
 
-setTimeout(function() {
+setTimeout(function () {
   asdf
-}, 500);
+}, 500)
