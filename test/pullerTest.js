@@ -18,43 +18,100 @@ var test = require('tape')
 var githubParser = require('parse-github-url')
 var proxyquire = require('proxyquire')
 
-test('git puller test', function (t) {
+test('git generate test', function (t) {
+  var spawnProxy = {
+    child_process: {
+      spawn: function () {
+      }
+    }
+  }
+
   t.test('invalid github url', function (t) {
     var url = 'invalidRepo'
     var gitPuller = require('../lib/gitPuller.js')()
 
-    gitPuller.pull(url, function (err, value) {
+    gitPuller.generate(url, function (err, value) {
       t.notEqual(err, undefined)
       t.end()
     })
   })
 
-  t.test('github url construction user/repo', function (t) {
+  t.test('github user/repo transformed to https format', function (t) {
     var url = 'senecajs/seneca'
-    var spawnProxy = {
-      child_process: {
-        spawn: function (bash, params, options) {
-          var paramsArray = params[1].split(' ')
-          var githubUrl = paramsArray[paramsArray.length - 1]
 
-          var github = githubParser(githubUrl)
-          t.equal(url, github.repo)
+    spawnProxy.child_process.spawn = function (bash, params, options) {
+      var paramsArray = params[1].split(' ')
+      var githubUrl = paramsArray[paramsArray.length - 1]
+      var github = githubParser(githubUrl)
 
-          t.end()
+      t.equal(url, github.repo)
+      t.equal(githubUrl, 'https://github.com/' + url + '.git')
 
-          var unref = function () {}
-          var on = function () {}
-          return {
-            unref: unref,
-            on: on
-          }
-        }
+      t.end()
+
+      var unref = function () {}
+      var on = function () {}
+      return {
+        unref: unref,
+        on: on
       }
     }
+
     var gitPuller = proxyquire('../lib/gitPuller.js', spawnProxy)()
-    gitPuller.pull(url, function (err, value) {
+    gitPuller.generate(url, function (err, value) {
       t.notOk(err)
-      console.log('gitPuller pull')
+    })
+  })
+
+  t.test('github full repo url - git protocol', function (t) {
+    var url = 'git@github.com:apparatus/fuge.git'
+
+    spawnProxy.child_process.spawn = function (bash, params, options) {
+      var paramsArray = params[1].split(' ')
+      var githubUrl = paramsArray[paramsArray.length - 1]
+
+      t.equal(url, githubUrl)
+
+      t.end()
+
+      var unref = function () {}
+      var on = function () {}
+      return {
+        unref: unref,
+        on: on
+      }
+    }
+
+    var gitPuller = proxyquire('../lib/gitPuller.js', spawnProxy)()
+    gitPuller.generate(url, function (err, value) {
+      t.notOk(err)
+    })
+  })
+
+
+
+  t.test('github full repo url - https', function (t) {
+    var url = 'https://github.com/apparatus/fuge.git'
+
+    spawnProxy.child_process.spawn = function (bash, params, options) {
+      var paramsArray = params[1].split(' ')
+      var githubUrl = paramsArray[paramsArray.length - 1]
+
+      t.equal(url, githubUrl)
+
+      t.end()
+
+      var unref = function () {}
+      var on = function () {}
+      return {
+        unref: unref,
+        on: on
+      }
+    }
+
+    var gitPuller = proxyquire('../lib/gitPuller.js', spawnProxy)()
+    gitPuller.generate(url, function (err, value) {
+      t.notOk(err)
     })
   })
 })

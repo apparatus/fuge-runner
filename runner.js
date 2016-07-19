@@ -30,7 +30,7 @@ module.exports = function (config) {
   var stop = function (sysDef, name, count, cb) { system.stop(sysDef, name, count, cb) }
   var stopAll = function (sysDef, cb) { system.stopAll(sysDef, cb) }
 
-  var pull = function (name, cb) { puller.pull(name, cb) }
+  var generate = function (name, cb) { puller.generate(name, cb) }
   var pullAll = function (sysDef, cb) { puller.pullAll(sysDef, cb) }
 
   var buildAll = function (sysDef, cb) { builder.buildAll(sysDef, cb) }
@@ -65,7 +65,7 @@ module.exports = function (config) {
     stop: stop,
     stopAll: stopAll,
 
-    pull: pull,
+    generate: generate,
     pullAll: pullAll,
 
     buildAll: buildAll,

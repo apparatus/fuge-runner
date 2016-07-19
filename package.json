@@ -28,6 +28,7 @@
     "chokidar": "^1.2.0",
     "chokidar-child": "^0.1.1",
     "dotenv": "^2.0.0",
+    "is-git-url": "^0.2.3",
     "lodash": "^3.10.1",
     "parse-github-url": "^0.3.1",
     "ps-tree": "^1.0.1",

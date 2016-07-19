@@ -1,4 +1,4 @@
 WIP -
 
 * Windows bug when fuge installed globally
-* Added __git pull user/repo__ functionality
+* Added __git generate user/repo__ functionality
