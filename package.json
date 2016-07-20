@@ -28,7 +28,9 @@
     "chokidar": "^1.2.0",
     "chokidar-child": "^0.1.1",
     "dotenv": "^2.0.0",
+    "is-git-url": "^0.2.3",
     "lodash": "^3.10.1",
+    "parse-github-url": "^0.3.1",
     "ps-tree": "^1.0.1",
     "pump": "^1.0.1",
     "simple-grep": "0.0.1",
@@ -53,6 +55,7 @@
     "istanbul": "^0.4.2",
     "spacey-standard": "^3.0.0",
     "pre-commit": "^1.1.1",
+    "proxyquire": "^1.7.10",
     "request": "^2.69.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.2.0"
