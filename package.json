@@ -8,14 +8,15 @@
     "runner",
     "watcher"
   ],
-  "version": "0.8.4",
+  "version": "0.9.0",
   "license": "MIT",
   "author": "Peter Elger (http://nearform.com/)",
   "contributors": [
     "Peter Elger <elger.peter@gmail.com> (http://peterelger.com/)",
     "Matthew O'Connor (https://github.com/matthewoconnor-development)",
     "Matteo Collina (https://github.com/mcollina)",
-    "Dean McDonnell (https://github.com/mcdonelldean)"
+    "Dean McDonnell (https://github.com/mcdonelldean)",
+    "Mihai Dima (https://github.com/mihaidma)"
   ],
   "main": "./runner.js",
   "engines": {
