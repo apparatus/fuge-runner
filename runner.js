@@ -16,11 +16,11 @@
 
 
 
-module.exports = function (config) {
-  var puller = require('./lib/gitPuller')(config)
-  var builder = require('./lib/processBuilder')(config)
-  var previewer = require('./lib/previewer')(config)
-  var system = require('./lib/system')(config)
+module.exports = function () {
+  var puller = require('./lib/gitPuller')()
+  var builder = require('./lib/processBuilder')()
+  var previewer = require('./lib/previewer')()
+  var system = require('./lib/system')()
   var util = require('./lib/util')()
 
   var start = function (sysDef, name, count, cb) { system.start(sysDef, name, count, cb) }
@@ -49,8 +49,8 @@ module.exports = function (config) {
   var preview = function (sysDef, name, cb) { previewer.preview(sysDef, name, cb) }
   var previewAll = function (sysDef, cb) { previewer.previewAll(sysDef, cb) }
 
-  var grep = function (name, config, search, cb) { util.grep(name, config, search, cb) }
-  var grepAll = function (system, config, search, cb) { util.grepAll(system, config, search, cb) }
+  var grep = function (name, search, cb) { util.grep(name, search, cb) }
+  var grepAll = function (system, search, cb) { util.grepAll(system, search, cb) }
 
   var heap = function (sysDef, name) { system.heap(sysDef, name) }
   var sendMessage = function (sysDef, name, message) { system.sendMessage(sysDef, name, message) }
