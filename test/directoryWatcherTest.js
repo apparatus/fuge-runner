@@ -66,7 +66,7 @@ test('directory watcher disabled test', function (t) {
     watcher.stop(w)
   },
   function (watcher) {
-    t.equal(watcher, null, 'watcher is null')
+    t.notEqual(watcher, null, 'watcher is not null')
     w = watcher
   })
 
