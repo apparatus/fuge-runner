@@ -49,7 +49,7 @@ module.exports = function () {
   var preview = function (sysDef, name, cb) { previewer.preview(sysDef, name, cb) }
   var previewAll = function (sysDef, cb) { previewer.previewAll(sysDef, cb) }
 
-  var grep = function (name, search, cb) { util.grep(name, search, cb) }
+  var grep = function (system, name, search, cb) { util.grep(system.global.log_path, name, search, cb) }
   var grepAll = function (system, search, cb) { util.grepAll(system, search, cb) }
 
   var heap = function (sysDef, name) { system.heap(sysDef, name) }
