@@ -18,41 +18,27 @@ var test = require('tape')
 var path = require('path')
 var runner = require('../lib/processRunner.js')()
 
+var RUN_CONTAINERS = false
+
+
 var container = {
-  id: 'frontend-456805ef',
   name: 'frontend',
-  containedBy: 'machine$fe2-2a4e28e5',
-  containerDefinitionId: 'frontend',
-  type: 'process',
-  contains: [],
-  specific: {
-    type: 'process',
-    path: path.join(__dirname, '/fixture/processRunner'),
-    proxyPort: 10000,
-    servicePort: 20008,
-    buildScript: 'buildsrv.sh',
-    repositoryUrl: 'fish',
-    execute: {
-      exec: 'node runme.js'
-    },
-    yamlPath: path.join(__dirname, '/system.yml'),
-    source: {
-    },
-    environment: {
-      PROXY_HOST: '__TARGETIP__',
-      'frontend_PORT': 10000,
-      'users_PORT': 10001,
-      'permissions_PORT': 10002,
-      'business_logic_PORT': 10003,
-      'audit_PORT': 10004,
-      'emails_PORT': 10005,
-      SERVICE_HOST: '0.0.0.0',
-      SERVICE_PORT: 20008
-    }
+  type: 'node',
+  path: path.join(__dirname, 'fixture', 'directoryWatcher'),
+  run: 'node runme.js',
+  monitor: true,
+  environment: {
+    PROXY_HOST: '__TARGETIP__',
+    'frontend_PORT': 10000,
+    'users_PORT': 10001,
+    'permissions_PORT': 10002,
+    'business_logic_PORT': 10003,
+    'audit_PORT': 10004,
+    'emails_PORT': 10005,
+    SERVICE_HOST: '0.0.0.0',
+    SERVICE_PORT: 20008
   }
 }
-
-
 
 var exitCb = function () {
 }
@@ -61,7 +47,7 @@ var exitCb = function () {
 test('process runner test', function (t) {
   t.plan(3)
 
-  runner.start('live', container, {}, exitCb, function (err, child) {
+  runner.start('live', container, RUN_CONTAINERS, exitCb, function (err, child) {
     t.equal(null, err)
     t.notEqual(undefined, child.pid)
     setTimeout(function () {
@@ -75,8 +61,8 @@ test('process runner test', function (t) {
 test('process exit test', function (t) {
   t.plan(2)
 
-  container.specific.execute.exec = 'node willfail.js'
-  runner.start('live', container, {}, exitCb, function (err, child) {
+  container.run = 'node willfail.js'
+  runner.start('live', container, RUN_CONTAINERS, exitCb, function (err, child) {
     t.equal(null, err)
     setTimeout(function () {
       runner.stop(container, child.pid, function (err) {
@@ -90,8 +76,8 @@ test('process exit test', function (t) {
 test('missing exec', function (t) {
   t.plan(1)
 
-  container.specific.execute.exec = undefined
-  runner.start('live', container, {}, exitCb, function (err) {
+  container.run = undefined
+  runner.start('live', container, RUN_CONTAINERS, exitCb, function (err) {
     t.notEqual(null, err)
   })
 })
@@ -100,8 +86,8 @@ test('missing exec', function (t) {
 test('process fail test', function (t) {
   t.plan(3)
 
-  container.specific.execute.exec = 'node wibble.js'
-  runner.start('live', container, {}, exitCb, function (err, child) {
+  container.run = 'node wibble.js'
+  runner.start('live', container, RUN_CONTAINERS, exitCb, function (err, child) {
     t.equal(null, err)
     t.notEqual(undefined, child.pid)
     setTimeout(function () {

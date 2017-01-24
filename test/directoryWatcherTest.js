@@ -20,33 +20,21 @@ var test = require('tape')
 var watcher = require('../lib/directoryWatcher.js')()
 
 var container = {
-  id: 'frontend-456805ef',
   name: 'frontend',
-  containedBy: 'machine$fe2-2a4e28e5',
-  containerDefinitionId: 'frontend',
   type: 'node',
-  contains: [],
-  specific: {
-    type: 'node',
-    path: path.join(__dirname, '/fixture/directoryWatcher'),
-    proxyPort: 10000,
-    servicePort: 20008,
-    buildScript: 'buildsrv.sh',
-    repositoryUrl: 'fish',
-    execute: {
-      exec: 'node runme.js'
-    },
-    environment: {
-      PROXY_HOST: '__TARGETIP__',
-      'frontend_PORT': 10000,
-      'users_PORT': 10001,
-      'permissions_PORT': 10002,
-      'business_logic_PORT': 10003,
-      'audit_PORT': 10004,
-      'emails_PORT': 10005,
-      SERVICE_HOST: '0.0.0.0',
-      SERVICE_PORT: 20008
-    }
+  path: path.join(__dirname, 'fixture', 'directoryWatcher'),
+  run: 'node runme.js',
+  monitor: true,
+  environment: {
+    PROXY_HOST: '__TARGETIP__',
+    'frontend_PORT': 10000,
+    'users_PORT': 10001,
+    'permissions_PORT': 10002,
+    'business_logic_PORT': 10003,
+    'audit_PORT': 10004,
+    'emails_PORT': 10005,
+    SERVICE_HOST: '0.0.0.0',
+    SERVICE_PORT: 20008
   }
 }
 
@@ -55,7 +43,7 @@ test('directory watcher test', function (t) {
   t.plan(1)
   var w
 
-  watcher.start(container, {}, function () {
+  watcher.start(container, function () {
     t.pass('watcher called')
     watcher.stop(w)
   },
@@ -64,7 +52,7 @@ test('directory watcher test', function (t) {
   })
 
   setTimeout(function () {
-    fs.writeFileSync(path.join(__dirname, '/fixture/directoryWatcher/asdf.txt'), 'asdf', 'utf8')
+    fs.writeFileSync(path.join(__dirname, 'fixture', 'directoryWatcher', 'asdf.txt'), 'asdf', 'utf8')
   }, 1000)
 })
 
@@ -73,8 +61,8 @@ test('directory watcher disabled test', function (t) {
   t.plan(1)
   var w
 
-  var opts = { overrides: { frontend: { monitor: false } } }
-  watcher.start(container, opts, function () {
+  container.monitor = false
+  watcher.start(container, function () {
     watcher.stop(w)
   },
   function (watcher) {
@@ -83,6 +71,7 @@ test('directory watcher disabled test', function (t) {
   })
 
   setTimeout(function () {
-    fs.writeFileSync(path.join(__dirname, '/fixture/directoryWatcher/asdf.txt'), 'asdf', 'utf8')
+    fs.writeFileSync(path.join(__dirname, 'fixture', 'directoryWatcher', 'asdf.txt'), 'asdf', 'utf8')
   }, 1000)
 })
+
