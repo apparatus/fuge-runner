@@ -24,7 +24,7 @@ var RUN_CONTAINERS = false
 var container = {
   name: 'frontend',
   type: 'node',
-  path: path.join(__dirname, '/fixture/directoryWatcher'),
+  path: path.join(__dirname, 'fixture', 'directoryWatcher'),
   run: 'node runme.js',
   monitor: true,
   environment: {
