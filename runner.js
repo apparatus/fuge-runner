@@ -14,14 +14,14 @@
 
 'use strict'
 
+var puller = require('./lib/gitPuller')()
+var builder = require('./lib/processBuilder')()
+var previewer = require('./lib/previewer')()
+var system = require('./lib/system')()
+var util = require('./lib/util')()
 
 
 module.exports = function () {
-  var puller = require('./lib/gitPuller')()
-  var builder = require('./lib/processBuilder')()
-  var previewer = require('./lib/previewer')()
-  var system = require('./lib/system')()
-  var util = require('./lib/util')()
 
   var start = function (sysDef, name, count, cb) { system.start(sysDef, name, count, cb) }
   var startAll = function (sysDef, count, cb) { system.startAll(sysDef, count, cb) }

@@ -22,7 +22,7 @@ var watcher = require('../lib/directoryWatcher.js')()
 var container = {
   name: 'frontend',
   type: 'node',
-  path: path.join(__dirname, '/fixture/directoryWatcher'),
+  path: path.join(__dirname, 'fixture', 'directoryWatcher'),
   run: 'node runme.js',
   monitor: true,
   environment: {
@@ -52,7 +52,7 @@ test('directory watcher test', function (t) {
   })
 
   setTimeout(function () {
-    fs.writeFileSync(path.join(__dirname, '/fixture/directoryWatcher/asdf.txt'), 'asdf', 'utf8')
+    fs.writeFileSync(path.join(__dirname, 'fixture', 'directoryWatcher', 'asdf.txt'), 'asdf', 'utf8')
   }, 1000)
 })
 
@@ -71,7 +71,7 @@ test('directory watcher disabled test', function (t) {
   })
 
   setTimeout(function () {
-    fs.writeFileSync(path.join(__dirname, '/fixture/directoryWatcher/asdf.txt'), 'asdf', 'utf8')
+    fs.writeFileSync(path.join(__dirname, 'fixture', 'directoryWatcher', 'asdf.txt'), 'asdf', 'utf8')
   }, 1000)
 })
 
