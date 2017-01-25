@@ -14,7 +14,7 @@
 
 'use strict'
 
-var test = require('tape')
+var test = require('tap').test
 var path = require('path')
 var runner = require('../lib/processRunner.js')()
 

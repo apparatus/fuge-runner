@@ -17,18 +17,21 @@
 var fs = require('fs')
 var path = require('path')
 var request = require('request')
-var test = require('tape')
-var main = require('../runner.js')({runDocker: false,
-                                    logPath: path.join(__dirname, '/log')})
+var _ = require('lodash')
+var test = require('tap').test
+var system = require('../lib/system.js')({runDocker: false,
+  logPath: path.join(__dirname, '/log')})
 var sys = require('./fixture/system/systemDefinition.js')
+var sys2 = require('./fixture/system2/systemDefinition.js')
+var async = require('async')
 
 
-test.skip('runner test', function (t) {
+test.skip('system test', function (t) {
   t.plan(6)
 
   var fixPath = path.join(__dirname, '/fixture/system/response.json')
   fs.writeFileSync(fixPath, '{ "resp": "Hello World!\\n" }', 'utf8')
-  main.startAll(sys, 1, function (err) {
+  system.startAll(sys, 1, function (err) {
     t.equal(err, undefined)
 
     setTimeout(function () {
@@ -41,12 +44,55 @@ test.skip('runner test', function (t) {
           request('http://localhost:8000', function (error, response, body) {
             t.equal(error, undefined)
             t.equal(body, 'Hello Fish!\n')
-            main.stopAll(sys, function (err) {
+            system.stopAll(sys, function (err) {
               t.equal(err, undefined)
             })
           })
         }, 1000)
       })
     }, 1000)
+  })
+})
+
+
+test.skip('system fail test', function (t) {
+  t.plan(1)
+
+  system.reset()
+
+  var fixPath = path.join(__dirname, '/fixture/system2/response.json')
+  fs.writeFileSync(fixPath, '{ "resp": "Hello World!\\n" }', 'utf8')
+  system.startAll(sys, 1, function () {
+    setTimeout(function () {
+      var p = system.processes()
+      // console.log(JSON.stringify(p, null, 2))
+      delete p[_.keys(p)[0]].container.specific.execute.exec
+      fs.writeFileSync(fixPath, '{ "resp": "Hello Fish!\\n" }', 'utf8')
+      setTimeout(function () {
+        system.stopAll(sys2, function (err) {
+          t.equal(err, undefined)
+        })
+      }, 200)
+    }, 1000)
+  })
+})
+
+
+test.skip('system colour test', function (t) {
+  var restart = [0, 0, 0, 0, 0]
+  t.plan(1)
+
+  system.reset()
+  async.eachSeries(restart, function (idx, next) {
+    system.reset()
+    system.startAll(sys, 1, function () {
+      setTimeout(function () {
+        system.stopAll(sys, function () {
+          next()
+        })
+      }, 500)
+    })
+  }, function () {
+    t.equal(1, 1)
   })
 })

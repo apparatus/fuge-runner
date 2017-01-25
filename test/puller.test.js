@@ -14,7 +14,7 @@
 
 'use strict'
 
-var test = require('tape')
+var test = require('tap').test
 var githubParser = require('parse-github-url')
 var proxyquire = require('proxyquire')
 
