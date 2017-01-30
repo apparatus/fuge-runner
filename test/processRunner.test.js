@@ -14,87 +14,79 @@
 
 'use strict'
 
-var test = require('tap').test
 var path = require('path')
-var runner = require('../lib/processRunner.js')()
+var test = require('tap').test
+var runner = require('../lib/processRunner')()
+var config = require('fuge-config')()
 
-var RUN_CONTAINERS = false
-
-
-var container = {
-  name: 'frontend',
-  type: 'node',
-  path: path.join(__dirname, 'fixture', 'directoryWatcher'),
-  run: 'node runme.js',
-  monitor: true,
-  environment: {
-    PROXY_HOST: '__TARGETIP__',
-    'frontend_PORT': 10000,
-    'users_PORT': 10001,
-    'permissions_PORT': 10002,
-    'business_logic_PORT': 10003,
-    'audit_PORT': 10004,
-    'emails_PORT': 10005,
-    SERVICE_HOST: '0.0.0.0',
-    SERVICE_PORT: 20008
-  }
-}
 
 var exitCb = function () {
 }
 
 
 test('process runner test', function (t) {
-  t.plan(3)
+  t.plan(4)
 
-  runner.start('live', container, RUN_CONTAINERS, exitCb, function (err, child) {
-    t.equal(null, err)
-    t.notEqual(undefined, child.pid)
-    setTimeout(function () {
-      runner.stop(container, child.pid, function (err) {
-        t.equal(null, err)
-      })
-    }, 1000)
+  config.load(path.join(__dirname, 'fixture', 'fuge.yml'), function (err, system) {
+    t.equal(err, null)
+    runner.start(system, 'live', system.topology.containers.runme, exitCb, function (err, child) {
+      t.equal(null, err)
+      t.notEqual(undefined, child.pid)
+      setTimeout(function () {
+        runner.stop(system.topology.containers.runme, child.pid, function (err) {
+          t.equal(null, err)
+        })
+      }, 1000)
+    })
   })
 })
 
-test('process exit test', function (t) {
-  t.plan(2)
 
-  container.run = 'node willfail.js'
-  runner.start('live', container, RUN_CONTAINERS, exitCb, function (err, child) {
-    t.equal(null, err)
-    setTimeout(function () {
-      runner.stop(container, child.pid, function (err) {
-        t.equal(null, err)
-      })
-    }, 1000)
+test('process exit test', function (t) {
+  t.plan(3)
+
+  config.load(path.join(__dirname, 'fixture', 'fuge.yml'), function (err, system) {
+    t.equal(err, null)
+    runner.start(system, 'live', system.topology.containers.willfail, exitCb, function (err, child) {
+      t.equal(null, err)
+      setTimeout(function () {
+        runner.stop(system.topology.containers.willfail, child.pid, function (err) {
+          t.equal(null, err)
+        })
+      }, 1000)
+    })
   })
 })
 
 
 test('missing exec', function (t) {
-  t.plan(1)
+  t.plan(2)
 
-  container.run = undefined
-  runner.start('live', container, RUN_CONTAINERS, exitCb, function (err) {
-    t.notEqual(null, err)
+  config.load(path.join(__dirname, 'fixture', 'fuge.yml'), function (err, system) {
+    t.equal(err, null)
+    system.topology.containers.runme.run = undefined
+    runner.start(system, 'live', system.topology.containers.runme, exitCb, function (err) {
+      t.notEqual(null, err)
+    })
   })
 })
 
 
 test('process fail test', function (t) {
-  t.plan(3)
+  t.plan(4)
 
-  container.run = 'node wibble.js'
-  runner.start('live', container, RUN_CONTAINERS, exitCb, function (err, child) {
-    t.equal(null, err)
-    t.notEqual(undefined, child.pid)
-    setTimeout(function () {
-      runner.stop(container, child.pid, function (err) {
-        t.equal(null, err)
-      })
-    }, 1000)
+  config.load(path.join(__dirname, 'fixture', 'fuge.yml'), function (err, system) {
+    t.equal(err, null)
+    system.topology.containers.runme.run = 'node wibble.js'
+    runner.start(system, 'live', system.topology.containers.runme, exitCb, function (err, child) {
+      t.equal(null, err)
+      t.notEqual(undefined, child.pid)
+      setTimeout(function () {
+        runner.stop(system.topology.containers.runme, child.pid, function (err) {
+          t.equal(null, err)
+        })
+      }, 1000)
+    })
   })
 })
 
