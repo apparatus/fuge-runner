@@ -17,6 +17,7 @@ mochahelper.js
 .settings/
 dist
 .tmp
+.nyc_output
 .sass-cache
 app/bower_components
 options.mine.js

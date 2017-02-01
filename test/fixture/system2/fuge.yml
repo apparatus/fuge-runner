@@ -63,19 +63,19 @@ module.exports = {
       },
       'docsrv-4a8ac373': {
         id: 'docsrv-4a8ac373',
-        monitor: true,
         name: 'docsrv',
+        monitor: true,
         containedBy: 'root-6f718f4',
         containerDefinitionId: 'docsrv',
         type: 'process',
         contains: [],
         specific: {
           type: 'process',
-          path: '/Users/pelger/work/nearform/code/microbial/fuge/fuge-runner/test/fixture/system',
+          path: '/Users/pelger/work/nearform/code/microbial/fuge/fuge-runner/test/fixture/system2',
           proxyPort: 10001,
           servicePort: 20001,
           execute: {
-            exec: 'node runme.js'
+            exec: 'node willfail.js'
           },
           environment: {
             PROXY_HOST: '__TARGETIP__',
@@ -102,7 +102,7 @@ module.exports = {
           proxyPort: 10001,
           servicePort: 20001,
           execute: {
-            exec: 'node runmetoo.js'
+            exec_intentionally_wrong: 'node fish.js'
           },
           environment: {
             PROXY_HOST: '__TARGETIP__',
@@ -118,3 +118,4 @@ module.exports = {
     }
   }
 }
+

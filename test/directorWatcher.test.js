@@ -16,7 +16,7 @@
 
 var fs = require('fs')
 var path = require('path')
-var test = require('tape')
+var test = require('tap').test
 var watcher = require('../lib/directoryWatcher.js')()
 
 var container = {
