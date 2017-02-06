@@ -1,0 +1,21 @@
+fuge_global:
+  run_containers: true
+  tail: true
+  monitor: true
+  monitor_excludes:
+    - '**/node_modules/**'
+    - '**/.git/**'
+    - '*.log'
+  auto_generate_environment: true
+wibble:
+  type: container
+  image: wibble
+  args: ''
+  ports:
+    - main=27017:27017
+fish:
+  type: container
+  image: fish
+  args: ''
+  ports:
+    - main=6379

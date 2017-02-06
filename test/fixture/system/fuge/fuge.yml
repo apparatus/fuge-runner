@@ -1,0 +1,51 @@
+fuge_global:
+  run_containers: false
+  tail: true
+  monitor: true
+  monitor_excludes:
+    - '**/node_modules/**'
+    - '**/.git/**'
+    - '*.log'
+  auto_generate_environment: true
+runme:
+  type: process
+  path: ../runme
+  run: node runme.js
+  ports:
+    - main=8000
+runnode:
+  type: node
+  path: ../runme
+  run: runme.js
+  ports:
+    - main=8000
+runnode2:
+  type: node
+  path: ../runme
+  run: node runme.js
+  ports:
+    - main=8000
+runshell:
+  type: process
+  path: ../runme
+  run: bash -c ./run.sh
+  ports:
+    - main=8000
+runmetoo:
+  type: process
+  path: ../runmetoo
+  run: node runmetoo.js
+  ports:
+    - main=8001
+willfail:
+  type: process
+  path: ../willfail
+  run: node willfail.js
+  ports:
+    - main=8002
+wibble:
+  type: process
+  path: ../runme
+  run: wibble
+  ports:
+    - main=8000

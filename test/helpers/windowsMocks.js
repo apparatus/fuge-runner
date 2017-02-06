@@ -14,33 +14,6 @@
 
 'use strict'
 
-var processRunner = require('./processRunner')()
-var dockerRunner = require('./dockerRunner')()
+module.exports.Docker = function Docker (args) {
 
-module.exports = function () {
-  var runners = {
-    process: processRunner,
-    node: processRunner,
-    container: dockerRunner
-  }
-
-
-
-  function start (system, mode, container, exitCb, cb) {
-    runners[container.type].start(system, mode, container, exitCb, cb)
-  }
-
-
-
-  function stop (container, pid, cb) {
-    runners[container.type].stop(container, pid, cb)
-  }
-
-
-
-  return {
-    start: start,
-    stop: stop
-  }
 }
-

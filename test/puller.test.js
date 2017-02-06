@@ -12,6 +12,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+
+
+/*
+ * replace this with direct api access rather than using cmd line 
+ * this won't currently support windows so needs to be replaced 
+ * then 100% coverage
+ *
+ */
+
 'use strict'
 
 var test = require('tap').test
@@ -25,6 +34,7 @@ var spawnProxy = {
   }
 }
 
+
 test('invalid github url', function (t) {
   var url = 'invalidRepo'
   var gitPuller = require('../lib/gitPuller.js')()
@@ -34,6 +44,7 @@ test('invalid github url', function (t) {
     t.end()
   })
 })
+
 
 test('github user/repo transformed to https format', function (t) {
   var url = 'senecajs/seneca'
