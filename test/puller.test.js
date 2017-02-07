@@ -37,7 +37,7 @@ var spawnProxy = {
 
 test('invalid github url', function (t) {
   var url = 'invalidRepo'
-  var gitPuller = require('../lib/gitPuller.js')()
+  var gitPuller = require('../lib/support/clone.js')()
 
   gitPuller.generate(url, function (err, value) {
     t.notEqual(err, undefined)

@@ -16,19 +16,28 @@
 
 require('events').EventEmitter.defaultMaxListeners = Infinity
 
-var puller = require('./lib/gitPuller')()
-var builder = require('./lib/processBuilder')()
-var previewer = require('./lib/previewer')()
+var puller = require('./lib/commands/pull')()
+var stater = require('./lib/commands/status')()
+var tester = require('./lib/commands/test')()
+var grepper = require('./lib/commands/grep')()
+var previewer = require('./lib/commands/preview')()
 var system = require('./lib/system')()
-var util = require('./lib/util')()
+var util = require('./lib/support/util')()
 
 
 module.exports = function () {
   return {
-    generate: function (name, cb) { puller.generate(name, cb) },
+    pull: function (sysDef, name, cb) { puller.pull(sysDef, name, cb) },
     pullAll: function (sysDef, cb) { puller.pullAll(sysDef, cb) },
 
-    buildAll: function (sysDef, cb) { builder.buildAll(sysDef, cb) },
+    test: function (sysDef, name, cb) { tester.test(sysDef, name, cb) },
+    testAll: function (sysDef, cb) { tester.testAll(sysDef, cb) },
+
+    stat: function (sysDef, name, cb) { stater.stat(sysDef, name, cb) },
+    statAll: function (sysDef, cb) { stater.statAll(sysDef, cb) },
+
+    grep: function (sysDef, name, search, cb) { grepper.grep(sysDef, name, search, cb) },
+    grepAll: function (sysDef, search, cb) { grepper.grepAll(sysDef, search, cb) },
 
     start: function (sysDef, name, count, cb) { system.start(sysDef, name, count, cb) },
     startAll: function (sysDef, count, cb) { system.startAll(sysDef, count, cb) },
@@ -49,9 +58,6 @@ module.exports = function () {
 
     processes: function () { return system.processes() },
     isProcessRunning: function (name) { return util.findProcess(system.processes(), name) },
-
-    grep: function (system, name, search, cb) { util.grep(system.global.log_path, name, search, cb) },
-    grepAll: function (system, search, cb) { util.grepAll(system, search, cb) },
 
     sendMessage: function (sysDef, name, message) { system.sendMessage(sysDef, name, message) }
   }

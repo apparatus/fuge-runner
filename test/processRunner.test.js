@@ -16,7 +16,7 @@
 
 var path = require('path')
 var test = require('tap').test
-var runner = require('../lib/processRunner')()
+var runner = require('../lib/support/processRunner')()
 var config = require('fuge-config')()
 
 

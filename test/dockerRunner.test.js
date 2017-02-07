@@ -19,7 +19,7 @@ var test = require('tap').test
 var config = require('fuge-config')()
 var docker = require('./helpers/dockerMocks')
 var proxyquire = require('proxyquire')
-var dockerRunner = proxyquire('../lib/dockerRunner', {dockerode: docker.Docker})
+var dockerRunner = proxyquire('../lib/support/dockerRunner', {dockerode: docker.Docker})
 
 
 function exitCb () {

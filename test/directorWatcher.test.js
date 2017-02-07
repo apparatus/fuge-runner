@@ -17,7 +17,7 @@
 var fs = require('fs')
 var path = require('path')
 var test = require('tap').test
-var watcher = require('../lib/directoryWatcher.js')()
+var watcher = require('../lib/support/directoryWatcher.js')()
 
 var container = {
   name: 'frontend',
