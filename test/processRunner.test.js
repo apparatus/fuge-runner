@@ -37,7 +37,7 @@ test('shell runner test', function (t) {
         runner.stop(system.topology.containers.runshell, child.pid, function (err) {
           t.equal(null, err)
         })
-      }, 1000)
+      }, 100)
     })
   })
 })
@@ -55,7 +55,7 @@ test('process runner test', function (t) {
         runner.stop(system.topology.containers.runme, child.pid, function (err) {
           t.equal(null, err)
         })
-      }, 1000)
+      }, 100)
     })
   })
 })
@@ -74,7 +74,7 @@ test('node runner test', function (t) {
         runner.stop(system.topology.containers.runnode, child.pid, function (err) {
           t.equal(null, err)
         })
-      }, 1000)
+      }, 100)
     })
   })
 })
@@ -93,7 +93,7 @@ test('node runner test 2', function (t) {
         runner.stop(system.topology.containers.runnode2, child.pid, function (err) {
           t.equal(null, err)
         })
-      }, 1000)
+      }, 100)
     })
   })
 })
@@ -124,7 +124,7 @@ test('process exit test', function (t) {
         runner.stop(system.topology.containers.willfail, child.pid, function (err) {
           t.equal(null, err)
         })
-      }, 1000)
+      }, 100)
     })
   })
 })
@@ -165,12 +165,11 @@ test('process kill test', function (t) {
       t.equal(null, err)
       t.notEqual(undefined, child.pid)
       setTimeout(function () {
-        console.log('KILL -> ' + child.pid)
         process.kill(child.pid, 'SIGKILL')
         runner.stop(system.topology.containers.runme, child.pid, function (err) {
           t.equal(null, err)
         })
-      }, 1000)
+      }, 100)
     })
   })
 })

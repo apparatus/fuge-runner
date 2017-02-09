@@ -53,7 +53,7 @@ test('directory watcher test', function (t) {
 
   setTimeout(function () {
     fs.writeFileSync(path.join(__dirname, 'fixture', 'directoryWatcher', 'asdf.txt'), 'asdf', 'utf8')
-  }, 1000)
+  }, 100)
 })
 
 

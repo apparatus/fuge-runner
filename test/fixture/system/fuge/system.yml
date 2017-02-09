@@ -6,6 +6,7 @@ fuge_global:
     - '**/node_modules/**'
     - '**/.git/**'
     - '*.log'
+  restart_on_error: true
   auto_generate_environment: true
 runme:
   type: node 
@@ -19,3 +20,7 @@ runmetoo:
   run: node runmetoo.js
   ports:
     - main=8001
+failfast:
+  type: process
+  path: ../failfast
+  run: node willfail.js

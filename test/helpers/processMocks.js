@@ -14,19 +14,60 @@
 
 'use strict'
 
-module.exports.cp = function () {
+var Readable = require('stream').Readable
+var Emitter = require('events')
+
+
+module.exports = function () {
+  var rs
+  var em
+  var output
+  var failExit = false
+
+  function setFailExit () {
+    failExit = true
+  }
+
+  function setOutput (out) {
+    output = out
+  }
+
 
   function spawn () {
+    em = new Emitter()
+    rs = new Readable()
+
+    rs._read = function () {
+      output.forEach(function (line) {
+        rs.push(line + '\n')
+      })
+      rs.push(null)
+    }
+
+    setTimeout(function () {
+      console.log('triggering exit')
+      if (failExit) {
+        em.emit('error', 'fail exit test')
+      } else {
+        em.emit('exit', 0)
+      }
+    }, 100)
+
     return {
       unref: function () { },
-      on: function () { },
+      on: function (evt, cb) {
+        em.on(evt, cb)
+      },
       pid: '12345',
-//      stdout:
+      stdout: rs,
       stderr: null
     }
   }
 
+
   return {
+    setFailExit: setFailExit,
+    setOutput: setOutput,
     spawn: spawn
   }
 }

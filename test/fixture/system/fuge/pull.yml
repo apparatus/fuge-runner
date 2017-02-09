@@ -1,0 +1,42 @@
+fuge_global:
+  run_containers: true
+  tail: true
+  monitor: true
+  monitor_excludes:
+    - '**/node_modules/**'
+    - '**/.git/**'
+    - '*.log'
+  auto_generate_environment: true
+runme:
+  type: process
+  path: ../runme
+  repository_url: https://github.com/apparatus/fuge-dns.git
+  run: node runme.js
+  test: npm test
+  ports:
+    - main=8000
+runmetoo:
+  type: process
+  path: ../runmetoo
+  repository_url: https://github.com/apparatus/fuge-config.git
+  run: node runmetoo.js
+  test: npm test
+  ports:
+    - main=8001
+runmeagain:
+  type: process
+  path: ../runme
+  run: node runme.js
+  ports:
+    - main=8000
+mongo:
+  type: container
+  image: mongo
+  args: ''
+  ports:
+    - main=27017:27017
+redis:
+  type: container
+  args: ''
+  ports:
+    - main=27017:27017

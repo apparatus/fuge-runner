@@ -39,13 +39,12 @@ module.exports = function () {
     grep: function (sysDef, name, search, cb) { grepper.grep(sysDef, name, search, cb) },
     grepAll: function (sysDef, search, cb) { grepper.grepAll(sysDef, search, cb) },
 
-    start: function (sysDef, name, count, cb) { system.start(sysDef, name, count, cb) },
+    start: function (sysDef, name, count, cb) { system.start(sysDef, name, count, false, cb) },
+    debug: function (sysDef, name, cb) { system.start(sysDef, name, 1, true, cb) },
     startAll: function (sysDef, count, cb) { system.startAll(sysDef, count, cb) },
     stop: function (sysDef, name, count, cb) { system.stop(sysDef, name, count, cb) },
     stopAll: function (sysDef, cb) { system.stopAll(sysDef, cb) },
-    preview: function (sysDef, name, cb) { previewer.preview(sysDef, name, cb) },
-    previewAll: function (sysDef, cb) { previewer.previewAll(sysDef, cb) },
-    debug: function (sysDef, name, cb) { system.debug(sysDef, name, cb) },
+    preview: function (sysDef, name, display, cb) { previewer.preview(sysDef, name, display, cb) },
 
     watch: function (sysDef, name) { return system.watch(sysDef, name) },
     watchAll: function (sysDef) { return system.watchAll(sysDef) },
@@ -57,9 +56,7 @@ module.exports = function () {
     untailAll: function (sysDef) { return system.untailAll(sysDef) },
 
     processes: function () { return system.processes() },
-    isProcessRunning: function (name) { return util.findProcess(system.processes(), name) },
-
-    sendMessage: function (sysDef, name, message) { system.sendMessage(sysDef, name, message) }
+    isProcessRunning: function (name) { return util.findProcess(system.processes(), name) }
   }
 }
 

@@ -15,11 +15,14 @@
 'use strict'
 
 var Emitter = require('events')
+var Readable = require('stream').Readable
 
 var failCreate
 var failAttach1
 var failAttach2
 var failStart
+var failPull
+var failFollow
 
 
 function container (id, createOpts) {
@@ -97,6 +100,26 @@ module.exports.failStart = function () {
   failStart = true
 }
 
+
+module.exports.failPull = function () {
+  failPull = true
+  failFollow = false
+}
+
+
+module.exports.failFollow = function () {
+  failPull = false
+  failFollow = true
+}
+
+
+var _rs = null
+var _output = []
+module.exports.setOutput = function (out) {
+  _output = out
+}
+
+
 module.exports.Docker = function Docker (args) {
   this.containers = {}
   this.idCount = 42
@@ -110,6 +133,32 @@ module.exports.Docker = function Docker (args) {
 
   this.getContainer = function (id) {
     return this.containers[id]
+  }
+
+
+  this.pull = function (image, cb) {
+    if (failPull) { return cb('fail pull test') }
+    _rs = new Readable()
+    _rs._read = function () {
+      _output.forEach(function (line) {
+        _rs.push(line + '\n')
+      })
+      _rs.push(null)
+    }
+    cb(null, _rs)
+  }
+
+
+  this.modem = {
+    followProgress: function (stream, cb) {
+      setTimeout(function () {
+        if (failFollow) {
+          cb('fail follow test')
+        } else {
+          cb(null)
+        }
+      }, 500)
+    }
   }
 }
 

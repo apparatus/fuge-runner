@@ -27,28 +27,11 @@ function configureLogs (system) {
   if (!fs.existsSync(logPath)) {
     fs.mkdirSync(logPath)
   }
+  if (!fs.existsSync(path.join(logPath, 'test'))) {
+    fs.mkdirSync(path.join(logPath, 'test'))
+  }
   system.global.log_path = logPath
 }
-
-
-test('preview test', function (t) {
-  t.plan(6)
-
-  config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'runner.yml'), function (err, system) {
-    t.equal(err, null)
-
-    main.preview(system, 'runme', function (err, result) {
-      t.equal(err, undefined)
-      t.equal(result.detail.environment.RUNME_PORT_8000_TCP, 'tcp://127.0.0.1:8000')
-    })
-
-    main.previewAll(system, function (err, result) {
-      t.equal(err, undefined)
-      t.equal(result[0].detail.environment.RUNME_PORT_8000_TCP, 'tcp://127.0.0.1:8000')
-      t.equal(result[1].detail.environment.RUNMETOO_PORT_8001_TCP, 'tcp://127.0.0.1:8001')
-    })
-  })
-})
 
 
 test('start stop test', function (t) {
@@ -64,7 +47,26 @@ test('start stop test', function (t) {
         main.stop(system, 'runme', 1, function (err) {
           t.equal(err, undefined)
         })
-      }, 1000)
+      }, 500)
+    })
+  })
+})
+
+
+test('debug start stop test', function (t) {
+  t.plan(3)
+
+  config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'runner.yml'), function (err, system) {
+    t.equal(err, null)
+
+    configureLogs(system)
+    main.debug(system, 'runme', function (err) {
+      t.equal(err, undefined)
+      setTimeout(function () {
+        main.stop(system, 'runme', 1, function (err) {
+          t.equal(err, undefined)
+        })
+      }, 500)
     })
   })
 })
@@ -83,17 +85,11 @@ test('start stop all test', function (t) {
         main.stopAll(system, function (err) {
           t.equal(err, undefined)
         })
-      }, 1000)
+      }, 500)
     })
   })
 })
 
-
-/*
-test('debug test', function(t) {
-    debug: function (sysDef, name, cb) { system.debug(sysDef, name, cb) },
-}
-*/
 
 test('watch unwatch test', function (t) {
   t.plan(11)
@@ -116,7 +112,7 @@ test('watch unwatch test', function (t) {
         main.stopAll(system, function (err) {
           t.equal(err, undefined)
         })
-      }, 1000)
+      }, 500)
     })
   })
 })
@@ -143,14 +139,14 @@ test('tail untail test', function (t) {
         main.stopAll(system, function (err) {
           t.equal(err, undefined)
         })
-      }, 1000)
+      }, 500)
     })
   })
 })
 
 
 test('ps and grep test', function (t) {
-  t.plan(7)
+  t.plan(11)
 
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'runner.yml'), function (err, system) {
     t.equal(err, null)
@@ -163,16 +159,24 @@ test('ps and grep test', function (t) {
         t.equal(Object.keys(main.processes()).length, 2, 'check process count is correct')
         t.ok(main.isProcessRunning('runme'), 'check process is running')
 
-        main.grep(system, 'runme', 'Server running', function (result) {
+        main.grep(system, 'runme', 'Server running', function (err, result) {
+          t.equal(err, null)
           t.equal(result.length, 1, 'check grep result')
-          main.grepAll(system, 'Server running', function (result) {
-            t.equal(result.length, 2, 'check grepall result')
-            main.stopAll(system, function (err) {
-              t.equal(err, undefined)
+
+          main.grep(system, 'fishbananna', 'Server running', function (err, result) {
+            t.equal(err, null)
+            t.equal(result.length, 0, 'check grep result')
+
+            main.grepAll(system, 'Server running', function (err, result) {
+              t.equal(err, null)
+              t.equal(result.length, 6, 'check grepall result')
+              main.stopAll(system, function (err) {
+                t.equal(err, undefined)
+              })
             })
           })
         })
-      }, 1000)
+      }, 500)
     })
   })
 })
@@ -210,9 +214,9 @@ test('watcher restart test', function (t) {
                 t.equal(err, undefined)
               })
             })
-          }, 1000)
+          }, 500)
         })
-      }, 1000)
+      }, 500)
     })
   })
 })

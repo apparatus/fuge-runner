@@ -43,7 +43,7 @@ test('docker runner test', function (t) {
             t.equal(null, err)
           })
         })
-      }, 1000)
+      }, 100)
     })
   })
 })
@@ -63,7 +63,7 @@ test('docker runner test same port', function (t) {
         runner.stop(system.topology.containers.fish, child.pid, function (err) {
           t.equal(null, err)
         })
-      }, 1000)
+      }, 100)
     })
   })
 })
@@ -84,7 +84,7 @@ test('file url test', function (t) {
         runner.stop(system.topology.containers.wibble, child.pid, function (err) {
           t.equal(null, err)
         })
-      }, 1000)
+      }, 100)
     })
   })
 })
@@ -105,7 +105,7 @@ test('http url test', function (t) {
         runner.stop(system.topology.containers.wibble, child.pid, function (err) {
           t.equal(null, err)
         })
-      }, 1000)
+      }, 100)
     })
   })
 })
