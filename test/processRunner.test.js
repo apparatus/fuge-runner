@@ -43,6 +43,25 @@ test('shell runner test', function (t) {
 })
 
 
+test('shell runner two test', function (t) {
+  t.plan(4)
+
+  config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'fuge.yml'), function (err, system) {
+    t.equal(err, null)
+    runner.start(system, 'live', system.topology.containers.runshell2, exitCb, function (err, child) {
+      t.equal(null, err)
+      t.notEqual(undefined, child.pid)
+
+      setTimeout(function () {
+        runner.stop(system.topology.containers.runshell, child.pid, function (err) {
+          t.equal(null, err)
+        })
+      }, 100)
+    })
+  })
+})
+
+
 test('process runner test', function (t) {
   t.plan(4)
 

@@ -39,24 +39,23 @@ module.exports = function () {
     grep: function (sysDef, name, search, cb) { grepper.grep(sysDef, name, search, cb) },
     grepAll: function (sysDef, search, cb) { grepper.grepAll(sysDef, search, cb) },
 
-    start: function (sysDef, name, count, cb) { system.start(sysDef, name, count, false, cb) },
-    debug: function (sysDef, name, cb) { system.start(sysDef, name, 1, true, cb) },
-    startAll: function (sysDef, count, cb) { system.startAll(sysDef, count, cb) },
-    stop: function (sysDef, name, count, cb) { system.stop(sysDef, name, count, cb) },
+    start: function (sysDef, name, cb) { system.start(sysDef, name, false, cb) },
+    debug: function (sysDef, name, cb) { system.start(sysDef, name, true, cb) },
+    startAll: function (sysDef, cb) { system.startAll(sysDef, cb) },
+    stop: function (sysDef, name, cb) { system.stop(sysDef, name, cb) },
     stopAll: function (sysDef, cb) { system.stopAll(sysDef, cb) },
     preview: function (sysDef, name, display, cb) { previewer.preview(sysDef, name, display, cb) },
 
-    watch: function (sysDef, name) { return system.watch(sysDef, name) },
-    watchAll: function (sysDef) { return system.watchAll(sysDef) },
-    unwatch: function (sysDef, name) { return system.unwatch(sysDef, name) },
-    unwatchAll: function (sysDef) { return system.unwatchAll(sysDef) },
-    tail: function (sysDef, name, count) { return system.tail(sysDef, name, count) },
+    watch: function (sysDef, name, cb) { return system.watch(sysDef, name, cb) },
+    watchAll: function (sysDef, cb) { return system.watchAll(sysDef, cb) },
+    unwatch: function (sysDef, name, cb) { return system.unwatch(sysDef, name, cb) },
+    unwatchAll: function (sysDef, cb) { return system.unwatchAll(sysDef, cb) },
+    tail: function (sysDef, name) { return system.tail(sysDef, name) },
     tailAll: function (sysDef) { return system.tailAll(sysDef) },
     untail: function (sysDef, name) { return system.untail(sysDef, name) },
     untailAll: function (sysDef) { return system.untailAll(sysDef) },
 
-    processes: function () { return system.processes() },
-    isProcessRunning: function (name) { return util.findProcess(system.processes(), name) }
+    isProcessRunning: function (sysDef, name) { return system.running(sysDef, name) }
   }
 }
 

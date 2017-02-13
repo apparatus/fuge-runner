@@ -28,7 +28,13 @@ runnode2:
 runshell:
   type: process
   path: ../runme
-  run: bash -c ./run.sh
+  run: bash -c './run.sh'
+  ports:
+    - main=8000
+runshell2:
+  type: process
+  path: ../runme
+  run: bash -c "./run.sh"
   ports:
     - main=8000
 runmetoo:

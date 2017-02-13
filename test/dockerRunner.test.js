@@ -105,7 +105,7 @@ test('http url test', function (t) {
         runner.stop(system.topology.containers.wibble, child.pid, function (err) {
           t.equal(null, err)
         })
-      }, 100)
+      }, 500)
     })
   })
 })

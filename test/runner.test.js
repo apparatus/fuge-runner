@@ -17,9 +17,14 @@
 var fs = require('fs')
 var path = require('path')
 var request = require('request')
+var docker = require('./helpers/dockerMocks')
+var proxyquire = require('proxyquire')
+proxyquire('../lib/support/dockerRunner', {dockerode: docker.Docker})
+
 var test = require('tap').test
 var main = require('../runner.js')()
 var config = require('fuge-config')()
+
 
 
 function configureLogs (system) {
@@ -41,11 +46,11 @@ test('start stop test', function (t) {
     t.equal(err, null)
 
     configureLogs(system)
-    main.start(system, 'runme', 1, function (err) {
-      t.equal(err, undefined)
+    main.start(system, 'runme', function (err) {
+      t.equal(err, null)
       setTimeout(function () {
-        main.stop(system, 'runme', 1, function (err) {
-          t.equal(err, undefined)
+        main.stop(system, 'runme', function (err) {
+          t.equal(err, null)
         })
       }, 500)
     })
@@ -61,10 +66,10 @@ test('debug start stop test', function (t) {
 
     configureLogs(system)
     main.debug(system, 'runme', function (err) {
-      t.equal(err, undefined)
+      t.equal(err, null)
       setTimeout(function () {
-        main.stop(system, 'runme', 1, function (err) {
-          t.equal(err, undefined)
+        main.stop(system, 'runme', function (err) {
+          t.equal(err, null)
         })
       }, 500)
     })
@@ -72,18 +77,38 @@ test('debug start stop test', function (t) {
 })
 
 
-test('start stop all test', function (t) {
+test('start stop all no containers test', function (t) {
   t.plan(3)
 
-  config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'runner.yml'), function (err, system) {
+  config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'docker.yml'), function (err, system) {
     t.equal(err, null)
 
     configureLogs(system)
-    main.startAll(system, 1, function (err) {
-      t.equal(err, undefined)
+    system.global.run_containers = false
+    main.startAll(system, function (err) {
+      t.equal(err, null)
       setTimeout(function () {
         main.stopAll(system, function (err) {
-          t.equal(err, undefined)
+          t.equal(err, null)
+        })
+      }, 500)
+    })
+  })
+})
+
+
+test('start stop all with containers test', function (t) {
+  t.plan(3)
+
+  config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'docker.yml'), function (err, system) {
+    t.equal(err, null)
+
+    configureLogs(system)
+    main.startAll(system, function (err) {
+      t.equal(err, null)
+      setTimeout(function () {
+        main.stopAll(system, function (err) {
+          t.equal(err, null)
         })
       }, 500)
     })
@@ -92,25 +117,40 @@ test('start stop all test', function (t) {
 
 
 test('watch unwatch test', function (t) {
-  t.plan(11)
+  t.plan(3)
 
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'runner.yml'), function (err, system) {
     t.equal(err, null)
-    t.ok(main.watch(system, 'runme'), 'check watch single container')
-    t.ok(main.unwatch(system, 'runme'), 'check unwatch single container')
-    t.ok(main.watchAll(system), 'check watch all containers')
-    t.ok(main.unwatchAll(system), 'check unwatch watch all containers')
-
     configureLogs(system)
-    main.startAll(system, 1, function (err) {
-      t.equal(err, undefined)
+
+    main.watch(system, 'runme', function (err) {
+      t.equal(null, err, 'check watch single container')
       setTimeout(function () {
-        t.ok(main.watch(system, 'runme'), 'check watch single container')
-        t.ok(main.unwatch(system, 'runme'), 'check unwatch single container')
-        t.ok(main.watchAll(system), 'check watch all containers')
-        t.ok(main.unwatchAll(system), 'check unwatch watch all containers')
-        main.stopAll(system, function (err) {
-          t.equal(err, undefined)
+        main.unwatch(system, 'wibble', function () {
+          main.unwatch(system, 'runme', function (err) {
+            t.equal(null, err, 'check unwatch single container')
+          })
+        })
+      }, 500)
+    })
+  })
+})
+
+
+test('watch unwatch all test', function (t) {
+  t.plan(3)
+
+  config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'runner.yml'), function (err, system) {
+    t.equal(err, null)
+    configureLogs(system)
+
+    main.watchAll(system, function (err) {
+      t.equal(null, err, 'check watch all')
+      setTimeout(function () {
+        main.unwatch(system, 'runme', function () {
+          main.unwatchAll(system, function (err) {
+            t.equal(null, err, 'check unwatch all')
+          })
         })
       }, 500)
     })
@@ -119,7 +159,7 @@ test('watch unwatch test', function (t) {
 
 
 test('tail untail test', function (t) {
-  t.plan(11)
+  t.plan(13)
 
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'runner.yml'), function (err, system) {
     t.equal(err, null)
@@ -127,17 +167,19 @@ test('tail untail test', function (t) {
     t.ok(main.untail(system, 'runme'), 'check untail single container')
     t.ok(main.tailAll(system), 'check tail all containers')
     t.ok(main.untailAll(system), 'check untail tail all containers')
+    t.equal(null, main.tail(system, 'wibble'), 'check tail bad container')
+    t.equal(null, main.untail(system, 'wibble'), 'check untail bad container')
 
     configureLogs(system)
-    main.startAll(system, 1, function (err) {
-      t.equal(err, undefined)
+    main.startAll(system, function (err) {
+      t.equal(err, null)
       setTimeout(function () {
-        t.ok(main.tail(system, 'runme', 1), 'check tail single container')
+        t.ok(main.tail(system, 'runme'), 'check tail single container')
         t.ok(main.untail(system, 'runme'), 'check untail single container')
         t.ok(main.tailAll(system), 'check tail all containers')
         t.ok(main.untailAll(system), 'check untail tail all containers')
         main.stopAll(system, function (err) {
-          t.equal(err, undefined)
+          t.equal(err, null)
         })
       }, 500)
     })
@@ -146,18 +188,17 @@ test('tail untail test', function (t) {
 
 
 test('ps and grep test', function (t) {
-  t.plan(11)
+  t.plan(10)
 
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'runner.yml'), function (err, system) {
     t.equal(err, null)
 
     configureLogs(system)
-    main.startAll(system, 1, function (err) {
-      t.equal(err, undefined)
+    main.startAll(system, function (err) {
+      t.equal(err, null)
 
       setTimeout(function () {
-        t.equal(Object.keys(main.processes()).length, 2, 'check process count is correct')
-        t.ok(main.isProcessRunning('runme'), 'check process is running')
+        t.ok(main.isProcessRunning(system, 'runme'), 'check process is running')
 
         main.grep(system, 'runme', 'Server running', function (err, result) {
           t.equal(err, null)
@@ -171,7 +212,7 @@ test('ps and grep test', function (t) {
               t.equal(err, null)
               t.equal(result.length, 6, 'check grepall result')
               main.stopAll(system, function (err) {
-                t.equal(err, undefined)
+                t.equal(err, null)
               })
             })
           })
@@ -196,8 +237,8 @@ test('watcher restart test', function (t) {
     }
     system.global.log_path = logPath
 
-    main.startAll(system, 1, function (err) {
-      t.equal(err, undefined)
+    main.startAll(system, function (err) {
+      t.equal(err, null)
 
       setTimeout(function () {
         request('http://localhost:8000', function (error, response, body) {
@@ -211,7 +252,7 @@ test('watcher restart test', function (t) {
               t.equal(body, 'Hello Fish!\n')
               main.stopAll(system, function (err) {
                 fs.unlinkSync(fixPath)
-                t.equal(err, undefined)
+                t.equal(err, null)
               })
             })
           }, 500)

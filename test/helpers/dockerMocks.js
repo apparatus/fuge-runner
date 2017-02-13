@@ -17,17 +17,19 @@
 var Emitter = require('events')
 var Readable = require('stream').Readable
 
-var failCreate
-var failAttach1
-var failAttach2
-var failStart
-var failPull
-var failFollow
+var failCreate = false
+var failAttach1 = false
+var failAttach2 = false
+var failStart = false
+var failPull = false
+var failFollow = false
 
 
 function container (id, createOpts) {
   var emitter = new Emitter()
   var attachCount = 0
+  var output = ['one', 'two']
+  var rs
 
   function attach (args, cb) {
 
@@ -37,9 +39,16 @@ function container (id, createOpts) {
     ++attachCount
 
     if (args.stream && args.stdout) {
-      return cb(null, process.stdout)
+      rs = new Readable()
+      rs._read = function () {
+        output.forEach(function (line) {
+          rs.push(line + '\n')
+        })
+        rs.push(null)
+      }
+      return cb(null, rs)
     } else if (args.stream && args.stderr) {
-      return cb(null, process.stderr)
+      return cb(null, null)
     } else {
       cb(null)
     }
@@ -53,7 +62,7 @@ function container (id, createOpts) {
 
 
   function wait (cb) {
-    emitter.on('stop', cb)
+    emitter.once('stop', cb)
   }
 
 

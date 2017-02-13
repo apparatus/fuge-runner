@@ -1,15 +1,15 @@
 fuge_global:
-  run_containers: false
+  run_containers: true
   tail: true
-  monitor: false
+  monitor: true
   monitor_excludes:
     - '**/node_modules/**'
     - '**/.git/**'
     - '*.log'
-  restart_on_error: true
   auto_generate_environment: true
 runme:
   type: node 
+  delay_start: 100
   path: ../runme
   run: node runme.js
   ports:
@@ -20,7 +20,9 @@ runmetoo:
   run: node runmetoo.js
   ports:
     - main=8001
-failfast:
-  type: process
-  path: ../failfast
-  run: node willfail.js
+mongo:
+  type: container
+  image: mongo
+  args: ''
+  ports:
+    - main=27017:27017
