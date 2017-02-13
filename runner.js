@@ -22,7 +22,6 @@ var tester = require('./lib/commands/test')()
 var grepper = require('./lib/commands/grep')()
 var previewer = require('./lib/commands/preview')()
 var system = require('./lib/system')()
-var util = require('./lib/support/util')()
 
 
 module.exports = function () {
