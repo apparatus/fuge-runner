@@ -14,83 +14,47 @@
 
 'use strict'
 
-var puller = require('./lib/gitPuller')()
-var builder = require('./lib/processBuilder')()
-var previewer = require('./lib/previewer')()
+require('events').EventEmitter.defaultMaxListeners = Infinity
+
+var puller = require('./lib/commands/pull')()
+var stater = require('./lib/commands/status')()
+var tester = require('./lib/commands/test')()
+var grepper = require('./lib/commands/grep')()
+var previewer = require('./lib/commands/preview')()
 var system = require('./lib/system')()
-var util = require('./lib/util')()
 
 
 module.exports = function () {
-
-  var start = function (sysDef, name, count, cb) { system.start(sysDef, name, count, cb) }
-  var startAll = function (sysDef, count, cb) { system.startAll(sysDef, count, cb) }
-  var debug = function (sysDef, name, cb) { system.debug(sysDef, name, cb) }
-  var profile = function (sysDef, name, cb) { system.profile(sysDef, name, cb) }
-  var stop = function (sysDef, name, count, cb) { system.stop(sysDef, name, count, cb) }
-  var stopAll = function (sysDef, cb) { system.stopAll(sysDef, cb) }
-
-  var generate = function (name, cb) { puller.generate(name, cb) }
-  var pullAll = function (sysDef, cb) { puller.pullAll(sysDef, cb) }
-
-  var buildAll = function (sysDef, cb) { builder.buildAll(sysDef, cb) }
-
-  var watch = function (sysDef, name) { system.watch(sysDef, name) }
-  var watchAll = function (sysDef) { system.watchAll(sysDef) }
-  var unwatch = function (sysDef, name) { system.unwatch(sysDef, name) }
-  var unwatchAll = function (sysDef) { system.unwatchAll(sysDef) }
-  var tail = function (sysDef, name, count) { system.tail(sysDef, name, count) }
-  var tailAll = function (sysDef) { system.tailAll(sysDef) }
-  var untail = function (sysDef, name) { system.untail(sysDef, name) }
-  var untailAll = function (sysDef) { system.untailAll(sysDef) }
-
-  var processes = function () { return system.processes() }
-  var isProcessRunning = function (name) { return util.findProcess(system.processes(), name) }
-  var preview = function (sysDef, name, cb) { previewer.preview(sysDef, name, cb) }
-  var previewAll = function (sysDef, cb) { previewer.previewAll(sysDef, cb) }
-
-  var grep = function (system, name, search, cb) { util.grep(system.global.log_path, name, search, cb) }
-  var grepAll = function (system, search, cb) { util.grepAll(system, search, cb) }
-
-  var heap = function (sysDef, name) { system.heap(sysDef, name) }
-  var sendMessage = function (sysDef, name, message) { system.sendMessage(sysDef, name, message) }
-  var startReport = function (sysDef, name) { system.startReport(sysDef, name) }
-  var stopReport = function (sysDef, name) { system.stopReport(sysDef, name) }
-
   return {
-    start: start,
-    startAll: startAll,
-    debug: debug,
-    profile: profile,
-    stop: stop,
-    stopAll: stopAll,
+    pull: function (sysDef, name, cb) { puller.pull(sysDef, name, cb) },
+    pullAll: function (sysDef, cb) { puller.pullAll(sysDef, cb) },
 
-    generate: generate,
-    pullAll: pullAll,
+    test: function (sysDef, name, cb) { tester.test(sysDef, name, cb) },
+    testAll: function (sysDef, cb) { tester.testAll(sysDef, cb) },
 
-    buildAll: buildAll,
+    stat: function (sysDef, name, cb) { stater.stat(sysDef, name, cb) },
+    statAll: function (sysDef, cb) { stater.statAll(sysDef, cb) },
 
-    watch: watch,
-    watchAll: watchAll,
-    unwatch: unwatch,
-    unwatchAll: unwatchAll,
+    grep: function (sysDef, name, search, cb) { grepper.grep(sysDef, name, search, cb) },
+    grepAll: function (sysDef, search, cb) { grepper.grepAll(sysDef, search, cb) },
 
-    tail: tail,
-    tailAll: tailAll,
-    untail: untail,
-    untailAll: untailAll,
+    start: function (sysDef, name, cb) { system.start(sysDef, name, false, cb) },
+    debug: function (sysDef, name, cb) { system.start(sysDef, name, true, cb) },
+    startAll: function (sysDef, cb) { system.startAll(sysDef, cb) },
+    stop: function (sysDef, name, cb) { system.stop(sysDef, name, cb) },
+    stopAll: function (sysDef, cb) { system.stopAll(sysDef, cb) },
+    preview: function (sysDef, name, display, cb) { previewer.preview(sysDef, name, display, cb) },
 
-    processes: processes,
-    isProcessRunning: isProcessRunning,
-    previewAll: previewAll,
-    preview: preview,
+    watch: function (sysDef, name, cb) { return system.watch(sysDef, name, cb) },
+    watchAll: function (sysDef, cb) { return system.watchAll(sysDef, cb) },
+    unwatch: function (sysDef, name, cb) { return system.unwatch(sysDef, name, cb) },
+    unwatchAll: function (sysDef, cb) { return system.unwatchAll(sysDef, cb) },
+    tail: function (sysDef, name) { return system.tail(sysDef, name) },
+    tailAll: function (sysDef) { return system.tailAll(sysDef) },
+    untail: function (sysDef, name) { return system.untail(sysDef, name) },
+    untailAll: function (sysDef) { return system.untailAll(sysDef) },
 
-    grep: grep,
-    grepAll: grepAll,
-
-    heap: heap,
-    sendMessage: sendMessage,
-    startReport: startReport,
-    stopReport: stopReport
+    isProcessRunning: function (sysDef, name) { return system.running(sysDef, name) }
   }
 }
+

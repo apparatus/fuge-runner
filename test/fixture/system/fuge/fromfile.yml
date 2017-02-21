@@ -9,13 +9,7 @@ fuge_global:
   auto_generate_environment: true
 runme:
   type: process
-  path: .
-  run: node runme.js
+  path: ../fromfile
+  run: node service.js
   ports:
     - main=8000
-runmetoo:
-  type: process
-  path: .
-  run: node runmetoo.js
-  ports:
-    - main=8001

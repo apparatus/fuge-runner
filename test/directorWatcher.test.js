@@ -17,7 +17,7 @@
 var fs = require('fs')
 var path = require('path')
 var test = require('tap').test
-var watcher = require('../lib/directoryWatcher.js')()
+var watcher = require('../lib/support/directoryWatcher.js')()
 
 var container = {
   name: 'frontend',
@@ -53,7 +53,7 @@ test('directory watcher test', function (t) {
 
   setTimeout(function () {
     fs.writeFileSync(path.join(__dirname, 'fixture', 'directoryWatcher', 'asdf.txt'), 'asdf', 'utf8')
-  }, 1000)
+  }, 100)
 })
 
 
@@ -68,6 +68,24 @@ test('directory watcher disabled test', function (t) {
   function (watcher) {
     t.notEqual(watcher, null, 'watcher is not null')
     w = watcher
+  })
+
+  setTimeout(function () {
+    fs.writeFileSync(path.join(__dirname, 'fixture', 'directoryWatcher', 'asdf.txt'), 'asdf', 'utf8')
+  }, 1000)
+})
+
+
+test('directory watcher disabled for containers test', function (t) {
+  t.plan(1)
+
+  container.monitor = true
+  container.type = 'container'
+  watcher.start(container, function () {
+    t.fail()
+  },
+  function (watcher) {
+    t.equal(null, watcher)
   })
 
   setTimeout(function () {

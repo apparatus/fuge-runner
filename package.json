@@ -46,7 +46,7 @@
   },
   "scripts": {
     "lint": "echo 'linting...' && spacey-standard | snazzy",
-    "test": "tap 'test/**/*.test.js' --branches=10 --statements=10 --functions=10 --lines=10",
+    "test": "tap 'test/**/*.test.js' --branches=75 --statements=90 --functions=90 --lines=90",
     "commit-check": "npm run test && npm run lint",
     "coverage": "npm run test -- --cov --coverage-report=html",
     "coveralls": "npm run test -- --cov --coverage-report=text-lcov | coveralls"
@@ -63,11 +63,11 @@
     "coveralls": "^2.11.14",
     "json-stringify-safe": "^5.0.1",
     "pre-commit": "^1.1.3",
+    "proxyquire": "^1.7.11",
+    "request": "^2.69.0",
     "snazzy": "^5.0.0",
     "spacey-standard": "^3.0.0",
     "tap": "^7.1.2",
-    "proxyquire": "^1.7.10",
-    "request": "^2.69.0",
     "tap-spec": "^4.1.1"
   }
 }

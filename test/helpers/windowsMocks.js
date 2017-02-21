@@ -14,35 +14,20 @@
 
 'use strict'
 
-var processRunner = require('./processRunner')()
-var windowsRunner = require('./windowsRunner')()
-var dockerRunner = require('./dockerRunner')()
+module.exports.cp = function () {
 
-module.exports = function () {
-  var isWin = /^win/.test(process.platform)
-  var runners = {
-    process: isWin ? windowsRunner : processRunner,
-    node: isWin ? windowsRunner : processRunner,
-    container: dockerRunner
+  function spawn () {
+    return {
+      unref: function () { },
+      on: function () { },
+      pid: '12345',
+//      stdout:
+      stderr: null
+    }
   }
-
-
-
-  function start (system, mode, container, exitCb, cb) {
-    runners[container.type].start(system, mode, container, exitCb, cb)
-  }
-
-
-
-  function stop (container, pid, cb) {
-    runners[container.type].stop(container, pid, cb)
-  }
-
-
 
   return {
-    start: start,
-    stop: stop
+    spawn: spawn
   }
 }
 

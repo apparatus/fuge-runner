@@ -1,0 +1,28 @@
+fuge_global:
+  run_containers: true
+  tail: true
+  monitor: true
+  monitor_excludes:
+    - '**/node_modules/**'
+    - '**/.git/**'
+    - '*.log'
+  auto_generate_environment: true
+runme:
+  type: node 
+  delay_start: 100
+  path: ../runme
+  run: node runme.js
+  ports:
+    - main=8000
+runmetoo:
+  type: process
+  path: ../runmetoo
+  run: node runmetoo.js
+  ports:
+    - main=8001
+mongo:
+  type: container
+  image: mongo
+  args: ''
+  ports:
+    - main=27017:27017
