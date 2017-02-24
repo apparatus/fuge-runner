@@ -21,6 +21,7 @@ var stater = require('./lib/commands/status')()
 var tester = require('./lib/commands/test')()
 var grepper = require('./lib/commands/grep')()
 var previewer = require('./lib/commands/preview')()
+var shell = require('./lib/commands/shell')()
 var system = require('./lib/system')()
 
 
@@ -37,6 +38,9 @@ module.exports = function () {
 
     grep: function (sysDef, name, search, cb) { grepper.grep(sysDef, name, search, cb) },
     grepAll: function (sysDef, search, cb) { grepper.grepAll(sysDef, search, cb) },
+
+    shell: function (sysDef, command, cb) { shell.shell(sysDef, command, cb) },
+    apply: function (sysDef, command, cb) { shell.apply(sysDef, command, cb) },
 
     start: function (sysDef, name, cb) { system.start(sysDef, name, false, cb) },
     debug: function (sysDef, name, cb) { system.start(sysDef, name, true, cb) },
