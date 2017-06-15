@@ -2,7 +2,6 @@
 [![npm version][npm-badge]][npm-url]
 [![npm downloads][npm-downloads-badge]][npm-url]
 [![Build Status][travis-badge]][travis-url]
-[![Gitter][gitter-badge]][gitter-url]
 
 Process and container runner and watcher for the fuge tool.
 
