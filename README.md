@@ -8,7 +8,7 @@ Process and container runner and watcher for the fuge tool.
 If you're using this module, and need help, you can:
 
 - Post a [github issue][],
-- Ask on the [Gitter][gitter-url].
+- Reach out on twitter to @pelger
 
 ## Install
 To install, simply use npm.
@@ -37,8 +37,6 @@ Copyright the apparatus team 2015, Licensed under [MIT][].
 [travis-badge]: https://travis-ci.org/apparatus/fuge-runner.svg?branch=master
 [travis-url]: https://travis-ci.org/apparatus/fuge-runner
 [travis-badge]: https://travis-ci.org/apparatus/fuge-runner.svg
-[gitter-badge]: https://badges.gitter.im/Join%20Chat.svg
-[gitter-url]: https://gitter.im/apparatus
 
 [apparatus team]: https://github.com/apparatus
 [MIT]: ./LICENSE
