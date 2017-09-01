@@ -67,7 +67,7 @@
     "proxyquire": "^1.7.11",
     "request": "^2.69.0",
     "snazzy": "^5.0.0",
-    "spacey-standard": "^3.0.0",
+    "spacey-standard": "^4.0.0",
     "tap": "^7.1.2",
     "tap-spec": "^4.1.1"
   }

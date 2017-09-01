@@ -1,4 +1,4 @@
-/*global asdf:true*/
+/* global asdf:true */
 'use strict'
 
 setTimeout(function () {

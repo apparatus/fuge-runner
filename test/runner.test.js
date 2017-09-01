@@ -210,7 +210,7 @@ test('ps and grep test', function (t) {
 
             main.grepAll(system, 'Server running', function (err, result) {
               t.equal(err, null)
-              t.equal(result.length, 6, 'check grepall result')
+              t.equal(result.length, 2, 'check grepall result')
               main.stopAll(system, function (err) {
                 t.equal(err, null)
               })
