@@ -77,7 +77,6 @@ test('debug start stop test', function (t) {
 })
 
 
-
 test('start stop all no containers test', function (t) {
   t.plan(3)
 
