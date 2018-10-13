@@ -59,6 +59,8 @@ module.exports = function () {
     untailAll: function (sysDef) { return system.untailAll(sysDef) },
 
     isProcessRunning: function (sysDef, name) { return system.running(sysDef, name) }
+
+    // re: function (sysDef, name) { return editer.edit(sysDef, name, cb) }
   }
 }
 
