@@ -41,6 +41,7 @@ module.exports = function () {
 
     shell: function (sysDef, command, cb) { shell.shell(sysDef, command, cb) },
     apply: function (sysDef, command, cb) { shell.apply(sysDef, command, cb) },
+    papply: function (sysDef, command, cb) { shell.papply(sysDef, command, cb) },
 
     start: function (sysDef, name, cb) { system.start(sysDef, name, false, cb) },
     debug: function (sysDef, name, cb) { system.start(sysDef, name, true, cb) },
