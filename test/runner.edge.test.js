@@ -25,7 +25,6 @@ var main = require('../runner.js')()
 var config = require('fuge-config')()
 
 
-
 function configureLogs (system) {
   var logPath = path.resolve(path.join(__dirname, 'fixture', 'system', 'fuge', 'log'))
   if (!fs.existsSync(logPath)) {
@@ -39,8 +38,6 @@ function configureLogs (system) {
 
 
 test('crash restart test', function (t) {
-  t.plan(3)
-
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'system.yml'), function (err, system) {
     t.equal(err, null)
 
@@ -50,6 +47,7 @@ test('crash restart test', function (t) {
       setTimeout(function () {
         main.stopAll(system, function (err) {
           t.equal(err, null)
+          t.end()
         })
       }, 2000)
     })
@@ -58,8 +56,6 @@ test('crash restart test', function (t) {
 
 
 test('watch unwatch bad containers test', function (t) {
-  t.plan(7)
-
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'edge.yml'), function (err, system) {
     t.equal(err, null)
     configureLogs(system)
@@ -79,10 +75,11 @@ test('watch unwatch bad containers test', function (t) {
                 setTimeout(function () {
                   main.unwatch(system, 'runmetoo', function (err) {
                     t.equal(null, err, 'check unwatch single container')
+                    t.end()
                   })
-                }, 500)
+                }, 1500)
               })
-            }, 500)
+            }, 1500)
           })
         })
       })
@@ -92,8 +89,6 @@ test('watch unwatch bad containers test', function (t) {
 
 
 test('watch unwatch all test', function (t) {
-  t.plan(3)
-
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'edge.yml'), function (err, system) {
     t.equal(err, null)
     configureLogs(system)
@@ -103,20 +98,18 @@ test('watch unwatch all test', function (t) {
       t.equal(null, err, 'check watch all')
       setTimeout(function () {
         main.watchAll(system, function (err) {
-          console.log(err)
           t.equal(null, err, 'check watch all')
           main.unwatchAll(system, function () {
+            t.end()
           })
         })
-      }, 500)
+      }, 1500)
     })
   })
 })
 
 
 test('start stop all no containers test', function (t) {
-  t.plan(4)
-
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'runner.yml'), function (err, system) {
     t.equal(err, null)
 
@@ -128,17 +121,16 @@ test('start stop all no containers test', function (t) {
           t.equal(err, null)
           main.stopAll(system, function (err) {
             t.equal(err, null)
+            t.end()
           })
         })
-      }, 500)
+      }, 1500)
     })
   })
 })
 
 
 test('stop unknown container test', function (t) {
-  t.plan(3)
-
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'runner.yml'), function (err, system) {
     t.equal(err, null)
 
@@ -147,6 +139,7 @@ test('stop unknown container test', function (t) {
       t.equal(err, 'container not found: wibble')
       main.stop(system, 'runme', function (err) {
         t.equal(err, 'container not running: runme')
+        t.end()
       })
     })
   })
@@ -154,8 +147,6 @@ test('stop unknown container test', function (t) {
 
 
 test('start unknown container test', function (t) {
-  t.plan(4)
-
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'runner.yml'), function (err, system) {
     t.equal(err, null)
 
@@ -168,6 +159,7 @@ test('start unknown container test', function (t) {
         system.topology.containers.runme.type = 'process'
         main.debug(system, 'runme', function (err) {
           t.equal(err, 'debug only available for conainer type node: runme')
+          t.end()
         })
       })
     })
@@ -176,8 +168,6 @@ test('start unknown container test', function (t) {
 
 
 test('start missing execute test', function (t) {
-  t.plan(5)
-
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'runner.yml'), function (err, system) {
     t.equal(err, null)
 
@@ -196,11 +186,12 @@ test('start missing execute test', function (t) {
               system.global.run_containers = false
               main.start(system, 'runme', function (err) {
                 t.equal(err, 'run containers disabled - skipping: runme')
+                t.end()
               })
-            }, 500)
+            }, 1500)
           })
         })
-      }, 500)
+      }, 1500)
     })
   })
 })

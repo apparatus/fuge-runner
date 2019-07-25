@@ -27,8 +27,6 @@ var runner = require('../runner')()
 
 
 test('preview test', function (t) {
-  t.plan(5)
-
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'pull.yml'), function (err, system) {
     t.equal(err, null)
 
@@ -39,6 +37,7 @@ test('preview test', function (t) {
       runner.preview(system, 'runme', 'full', function (err, result) {
         t.equal(err, null)
         t.equal(result.environment.RUNME_PORT_8000_TCP, 'tcp://127.0.0.1:8000')
+        t.end()
       })
     })
   })
@@ -46,27 +45,25 @@ test('preview test', function (t) {
 
 
 test('docker preview test', function (t) {
-  t.plan(3)
-
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'pull.yml'), function (err, system) {
     t.equal(err, null)
 
     runner.preview(system, 'mongo', 'short', function (err, result) {
       t.equal(err, null)
       t.equal(result.environment.RUNME_PORT_8000_TCP, 'tcp://127.0.0.1:8000')
+      t.end()
     })
   })
 })
 
 
 test('preview fail test', function (t) {
-  t.plan(2)
-
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'pull.yml'), function (err, system) {
     t.equal(err, null)
 
     runner.preview(system, 'fishbananna', 'short', function (err, result) {
       t.equal(err, 'container not found: fishbananna')
+      t.end()
     })
   })
 })

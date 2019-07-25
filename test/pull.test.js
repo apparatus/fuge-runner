@@ -38,7 +38,6 @@ function configureLogs (system) {
 
 
 test('git pull test', function (t) {
-  t.plan(2)
   var output = ['Already up-to-date.']
 
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'pull.yml'), function (err, system) {
@@ -48,13 +47,13 @@ test('git pull test', function (t) {
     processMocks.setOutput(output)
     runner.pull(system, 'runme', function (err) {
       t.equal(err, null)
+      t.end()
     })
   })
 })
 
 
 test('pull fail test', function (t) {
-  t.plan(4)
   var output = ['Already up-to-date.']
 
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'pull.yml'), function (err, system) {
@@ -70,6 +69,7 @@ test('pull fail test', function (t) {
         t.equal(err, 'missing repository url for: runmeagain')
         runner.pull(system, 'redis', function (err) {
           t.equal(err, 'missing image tag for: redis')
+          t.end()
         })
       })
     })
@@ -78,7 +78,6 @@ test('pull fail test', function (t) {
 
 
 test('git pull all test', function (t) {
-  t.plan(2)
   var output = ['Already up-to-date.']
 
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'pull.yml'), function (err, system) {
@@ -91,13 +90,13 @@ test('git pull all test', function (t) {
     runner.pullAll(system, function (err) {
       console.log(err)
       t.equal(err, null)
+      t.end()
     })
   })
 })
 
 
 test('docker pull fail test', function (t) {
-  t.plan(3)
   var output = ['Already up-to-date.']
 
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'pull.yml'), function (err, system) {
@@ -113,7 +112,9 @@ test('docker pull fail test', function (t) {
       dockerMocks.failFollow()
       runner.pull(system, 'mongo', function (err) {
         t.equal(err, 'fail follow test')
+        t.end()
       })
     })
   })
 })
+

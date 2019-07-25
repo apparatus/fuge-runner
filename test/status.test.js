@@ -38,7 +38,6 @@ function configureLogs (system) {
 
 
 test('status test', function (t) {
-  t.plan(2)
   var output = ['Already up-to-date.']
 
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'pull.yml'), function (err, system) {
@@ -48,13 +47,13 @@ test('status test', function (t) {
     processMocks.setOutput(output)
     runner.stat(system, 'runme', function (err) {
       t.equal(err, null)
+      t.end()
     })
   })
 })
 
 
 test('status fail test', function (t) {
-  t.plan(4)
   var output = ['Already up-to-date.']
 
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'pull.yml'), function (err, system) {
@@ -68,7 +67,8 @@ test('status fail test', function (t) {
       runner.stat(system, 'runmeagain', function (err) {
         t.equal(err, 'missing repository url for: runmeagain')
         runner.stat(system, 'mongo', function (err) {
-          t.equal(err, 'status not suuported for this container type: container')
+          t.equal(err, 'status not supported for this container type: container')
+          t.end()
         })
       })
     })
@@ -77,7 +77,6 @@ test('status fail test', function (t) {
 
 
 test('status all test', function (t) {
-  t.plan(2)
   var output = ['Already up-to-date.']
 
   config.load(path.join(__dirname, 'fixture', 'system', 'fuge', 'pull.yml'), function (err, system) {
@@ -87,6 +86,7 @@ test('status all test', function (t) {
     processMocks.setOutput(output)
     runner.statAll(system, function (err) {
       t.equal(err, null)
+      t.end()
     })
   })
 })
